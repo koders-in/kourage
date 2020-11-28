@@ -4,18 +4,21 @@
   </a>
 </p>
 <p align="center">
-  Sleek, intuitive, and powerful company for faster and easier software development.
+  <i> "Your vision, Our Kreation" </i>
+  <br> 
+  <br> 
+  An institution that caters to all your software needs with their touch of Koding.
   <br>
-  <a href="https://getbootstrap.com/docs/4.3/"><strong>Explore More»</strong></a>
+  <a href="https://www.koders.in"><strong>Explore More»</strong></a>
   <br>
   <br>
   <a href="https://www.github.com/koders-in">Github</a>
   ·
-  <a href="https://github.com/twbs/bootstrap/issues/new?template=feature.md&labels=feature">LinkedIn</a>
+  <a href="https://www.linkedin.com/company/54359381/">LinkedIn</a>
   ·
-  <a href="https://themes.getbootstrap.com/">Youtube</a>
+  <a href="https://www.youtube.com/channel/UCZ5abFiwqKyJLIQ1Jqb6bNg">Youtube</a>
   ·
-  <a href="https://blog.getbootstrap.com/">Instagram</a>
+  <a href="https://www.instagram.com/koders_in/">Instagram</a>
 </p>
 
 # Introduction
@@ -62,34 +65,7 @@ This is the offical repo of discord bot of Koders.
 ## Structure
 
 ```
-|-- SECURITY.md
-|-- automatic_message.py
-|-- credentials.py
-|-- deadline_cross_reminder.py
-|-- demo.db
-|-- dm_template.py
-|-- email_template.py
-|-- html_email_template.py
-|-- leveling_system.py
-|-- main.py
-|-- register.py
-|-- register_as_koders.py
-|-- register_client.py
-|-- register_community.py
-|-- register_for_career_at_koders.py
-|-- register_member.py
-|-- register_partner.py
-|-- register_project.py
-|-- register_task.py
-|-- settings.py
-|-- show_task.py
-|-- static
-|   `-- logo.png
-|-- suggestion_box.py
-|-- task.py
-|-- task_done.py
-|-- task_edit.py
-|-- ticket\ (1).sql
+Will be added later (Check dev branch)
 ```
 
 
@@ -101,17 +77,7 @@ Use prefix `&` before using any commands.
 
 
 ### Commands
-
-- ```version``` : Shows current version
-- ```ping```: Checks online status
-- ```image _image_name_```: Fetches any random image on imagename
-- ```meme```: Fetches any random meme
-- ```poll _subject_```: Put a poll on the subject among channel
-- ```playmusic _url_```: Plays music in voice channel
-- ```skipmusic ```: Skips music 
-- ```stopmusic```: Stops and bot leaves from voice channel
-- ```teaminfo```:Team members details
-- ```clientinfo```:Clients details
+<i> Under process, check dev branch for more </i>
 
 ### Issues
 
