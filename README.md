@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://koders.in/">
-    <img src="./static/logo.png" alt="Logo" width="200" height="200">
+    <img src="logo.png" alt="Logo" width="200" height="200">
   </a>
 </p>
 <p align="center">
