@@ -59,7 +59,7 @@ This is the offical repo of discord bot of Koders.
 - Keep it civil, courteous and polite. No personal attacks. 
 - Don't waste people's time by generating unimportant issues.
 - Please don't push files anywhere.
-- For suggestions, please raise an issues.
+- For suggestions, please raise an issue.
 - If you are a collaborator of this repository, please don't merge pull requests without confirmation from the owner.
 
 ## Structure
