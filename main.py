@@ -24,7 +24,7 @@ logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
 import config as CONFIG  # Capitals for global
 import embeds as EMBEDS  # Capitals for global
 import gsheet as GSHEET  # Capital for global
-
+import attendance_info as attendance_info
 
 class Logger:
     def __init__(self, app):
@@ -98,8 +98,85 @@ async def take_reaction(ctx, timeout=1200.0):
         await take_reaction(ctx, timeout=timeout)
 
 
+
+@bot.event
+async def on_ready():
+    print(f'logged in as {bot.user}')
+
+# ext.command
+
+ # Ping command
+@bot.command()
+@commands.has_any_role("@everyone")
+async def attendance(msg):
+    await msg.send(attendance_info.func_list)
+
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def my_attendance(msg):
+    name=str(msg.author)
+    name=name.lower()
+    counter=attendance_info.search_by_name(name)
+    await msg.send(f'Name-> {name} Shifts Present-> {counter} total Shifts-> {len(attendance_info.dates)*2}')
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def overall_attendance_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    counter=attendance_info.search_by_name(name)
+    await msg.send(f'Name-> {name} Shifts Present-> {counter} total Shifts-> {len(attendance_info.dates)*2}')
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def total_attendance(msg):
+    attendance=attendance_info.overall_attendance()
+    await msg.send(attendance)  
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def weekly_attendance(msg):
+    save_filename=attendance_info.weekly_bar()
+    await msg.send(file=discord.File(save_filename))
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def monthly_attendance(msg):
+    save_filename=attendance_info.monthly_bar()
+    await msg.send(file=discord.File(save_filename))
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def pie_graph_of(msg):
+    name=str(msg.message.content)
+    name=name.split()[1]
+    save_filename=attendance_info.visualize_pie_graph_search_by_name(name)
+    await msg.channel.send(file=discord.File(save_filename))
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def compare_bar(msg):
+    names=str(msg.message.content)
+    names=names.split()[1]
+    names=names.split(',')
+    save_filename=attendance_info.compare_bar(names)
+    await msg.channel.send(file=discord.File(save_filename))
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def compare_pie(msg):
+    names=str(msg.message.content)
+    names=names.split()[1]
+    names=names.split(',')
+    save_filename=attendance_info.pie_compare(names)
+    await msg.channel.send(file=discord.File(save_filename))
+
+
+
+
 async def take_attendance_morning(ctx):
-    embed = EMBEDS.attendance("11:00", "11:20")
+    embed = EMBEDS.attendance("11:00", "14:00")
     msg = await ctx.send(embed=embed)
     await msg.add_reaction(emoji="⬆️")
     await take_reaction(msg)
@@ -128,16 +205,16 @@ async def attendance_task():
     logger.info("Waiting for tasks...")
 
 
-# Ping command
+ # Ping command
 @bot.command()
 @commands.has_any_role("@everyone")
 async def ping(msg):
     await msg.send('Pong! 🏓\n ' +
-                   'Name: Kourage \n ' +
-                   'Description: AIO bot of Koders \n ' +
-                   'Version: {0} \n '.format(CONFIG.VERSION) +
-                   'Username: {0} \n '.format(msg.author.name) +
-                   'Latency: {0} sec '.format(round(bot.latency, 1)))
+        'Name: Kourage \n ' +
+        'Description: AIO bot of Koders \n ' +
+        'Version: {0} \n '.format(CONFIG.VERSION) +
+        'Username: {0} \n '.format(msg.author.name) +
+        'Latency: {0} sec '.format(round(bot.latency, 1)))
 
 
 # Define command
@@ -234,6 +311,7 @@ async def poll(msg, question, *options: str):
 if __name__ == "__main__":
     try:
         attendance_task.start()
+        attendance_info.initialize()
         bot.run(CONFIG.TOKEN)
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
