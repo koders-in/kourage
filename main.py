@@ -174,6 +174,58 @@ async def compare_pie(msg):
 
 
 
+@bot.command()
+@commands.has_any_role("@everyone")
+async def dates_absent_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    dates_absent=attendance_info.days_absent(name)
+    await msg.send(f'Name-> {name}    dates absent=>{dates_absent}')
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def dates_present_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    dates_present=attendance_info.days_present(name)
+    await msg.send(f'Name-> {name}    dates present=>{dates_present}')
+
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def weekly_dates_absent_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    dates_absent=attendance_info.week_dates_absent(name)
+    await msg.send(f'Name-> {name}    dates absent=>{dates_absent}')
+
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def weekly_dates_present_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    dates_present=attendance_info.week_dates_present(name)
+    await msg.send(f'Name-> {name}    dates absent=>{dates_present}')
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def monthly_dates_absent_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    dates_absent=attendance_info.month_dates_absent(name)
+    await msg.send(f'Name-> {name}    dates absent=>{dates_absent}')
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def monthly_dates_present_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    dates_present=attendance_info.month_dates_present(name)
+    await msg.send(f'Name-> {name}    dates present=>{dates_present}')
+  
+
+
 
 async def take_attendance_morning(ctx):
     embed = EMBEDS.attendance("11:00", "14:00")

@@ -16,7 +16,14 @@ func_list='''   For your attendance type ~my_attendance
                 For monthly attendance type ~monthly_attendance
                 For pie graph for person type ~pie_graph_of somename
                 For bar graph of comparision type ~compare_pie names seperated by a ,
-                For bar graph of comparision type ~compare_bar names seperated by a ,'''
+                For bar graph of comparision type ~compare_bar names seperated by a ,
+                for dates absent of some person type ~dates_absent_of name
+                for dates present of some person type ~dates_present_of name
+                for dates weekly absent of some person type ~weekly_dates_absent_of name
+                for dates weekly present of some person type ~weekly_dates_present_of name
+                for dates monthly absent of some person type ~monthly_dates_absent_of name
+                for dates monthly present of some person type ~monthly_dates_present_of name'''
+
 
 
 
@@ -314,9 +321,69 @@ def monthly_bar():
     plt.close()
     return(save_filename)
 
+def days_present(name):
+    present_dates=[]
+    for each in data:
+        name_check=each[2]
+        name_check=name_check.lower()
+        #print(name_check)
+        if name_check.startswith(name):
+            present_dates.append(each[0])
+        present_dates=list(set(present_dates))
+        present_dates.sort()
+    return(present_dates)
 
 
+def days_absent(name):
+    present_dates=days_present(name)
+    absent_dates=[]
+    for date in dates:
+        if date not in present_dates:
+            absent_dates.append(date)
+    absent_dates.sort()
+    return absent_dates
 
+def week_dates_absent(name):
+    weekly_absent_dates=[]
+    present_dates=days_present(name)
+    week_dates=weekly_attendance()
+    for date in week_dates:
+        if date not in present_dates:
+            weekly_absent_dates.append(date)
+    return weekly_absent_dates
+
+
+def week_dates_present(name):
+    weekly_present_dates=[]
+    present_dates=days_present(name)
+    week_dates=weekly_attendance()
+    for date in week_dates:
+        if date in present_dates:
+            weekly_present_dates.append(date)
+    return (weekly_present_dates)
+
+
+def month_dates_absent(name):
+    monthly_absent_dates=[]
+    present_dates=days_present(name)
+    month_dates=monthly_attendance()
+    for date in month_dates:
+        if date not in present_dates:
+            monthly_absent_dates.append(date)
+    return monthly_absent_dates
+
+
+def month_dates_present(name):
+    monthly_present_dates=[]
+    present_dates=days_present(name)
+    month_dates=monthly_attendance()
+    for date in month_dates:
+        if date in present_dates:
+            monthly_present_dates.append(date)
+    return (monthly_present_dates)
+   
 # Driver code
 if __name__ == '__main__':
     initialize()
+    month_dates_present('benzee')
+    print(f"total=>   {dates}")
