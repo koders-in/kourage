@@ -148,7 +148,6 @@ def visualize_bar_overall_attendance():
     figure = plt.gcf()
     figure.set_size_inches(16, 8)
     plt.savefig(save_filename) 
-    plt.show(block=False)
     plt.close()
     return save_filename
 
@@ -163,8 +162,6 @@ def visualize_pie_graph_search_by_name(name):
     figure = plt.gcf()
     figure.set_size_inches(8, 8)
     plt.savefig(save_filename)
-    plt.show(block=False)
-    time.sleep(.1)
     plt.close()
     return(save_filename)
     
@@ -186,7 +183,6 @@ def compare_bar(names_to_compare):
     figure = plt.gcf()
     figure.set_size_inches(16, 8)
     plt.savefig(save_filename)
-    plt.show(block=False)
     plt.close()
     return(save_filename)
 
@@ -204,8 +200,6 @@ def pie_compare(namess):
     figure = plt.gcf()
     figure.set_size_inches(8, 8)
     plt.savefig(save_filename)
-    plt.show(block=False)
-    time.sleep(.1)
     plt.close()
     return(save_filename)
 def weekly_bar():
@@ -234,8 +228,6 @@ def weekly_bar():
     figure = plt.gcf()
     figure.set_size_inches(16, 8)
     plt.savefig(save_filename)
-    plt.show(block=False)
-    time.sleep(.1)
     plt.close()
     return(save_filename)
 
@@ -268,8 +260,6 @@ def monthly_bar():
     figure = plt.gcf()
     figure.set_size_inches(16, 8)
     plt.savefig(save_filename)
-    plt.show(block=False)
-    time.sleep(.1)
     plt.close()
     return(save_filename)
 
@@ -303,8 +293,6 @@ def custom_bar(no_of_days):
     figure = plt.gcf()
     figure.set_size_inches(16, 8)
     plt.savefig(save_filename)
-    plt.show(block=False)
-    time.sleep(.1)
     plt.close()
     return(save_filename)
 
