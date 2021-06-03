@@ -223,8 +223,32 @@ async def monthly_dates_present_of(msg):
     name=name.lower()
     dates_present=attendance_info.month_dates_present(name)
     await msg.send(f'Name-> {name}    dates present=>{dates_present}')
-  
 
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def custom_dates_absent_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    no_of_days=int(msg.message.content.split(' ')[2])
+    dates_absent=attendance_info.custom_dates_absent(name,no_of_days)
+    await msg.send(f'Name-> {name}    dates absent=>{dates_absent}') 
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def custom_dates_present_of(msg):
+    name=msg.message.content.split(' ')[1]
+    name=name.lower()
+    no_of_days=int(msg.message.content.split(' ')[2])
+    dates_absent=attendance_info.custom_dates_present(name,no_of_days)
+    await msg.send(f'Name-> {name}    dates absent=>{dates_absent}') 
+
+@bot.command()
+@commands.has_any_role("@everyone")
+async def custom_days_bar(msg):
+    no_of_days=int(msg.message.content.split(' ')[1])
+    save_filename=attendance_info.custom_bar(no_of_days)
+    await msg.channel.send(file=discord.File(save_filename))
 
 
 async def take_attendance_morning(ctx):
