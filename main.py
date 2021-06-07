@@ -103,6 +103,7 @@ async def take_reaction(ctx, timeout=1200.0):
 @commands.has_any_role("@everyone")
 async def ff(msg):
     #to get last message
+    
     messages_final=[]
     message_to_be_forwarded=[]
     loop_itterator=1
@@ -115,19 +116,26 @@ async def ff(msg):
     message_details= await msg.channel.history(limit=int(last_n_messages)).flatten() 
     channel_name=msg.message.content.split(' ')[2] 
     channel = discord.utils.get(bot.get_all_channels(), name=f'{channel_name}')
-    while loop_itterator<last_n_messages:
-        m_id.append(str(message_details[loop_itterator]).split(' ')[1].split('=')[1])
-        loop_itterator=loop_itterator+1
-    for each_id in m_id:
-        message_to_be_forwarded.append(await msg.fetch_message(each_id))
-    for each_item in message_to_be_forwarded:
-        messages_final.append(each_item.content)
+    if channel is not None:
+        while loop_itterator<last_n_messages:
+            m_id.append(str(message_details[loop_itterator]).split(' ')[1].split('=')[1])
+            loop_itterator=loop_itterator+1
+        for each_id in m_id:
+            message_to_be_forwarded.append(await msg.fetch_message(each_id))
+        for each_item in message_to_be_forwarded:
+            messages_final.append(each_item.content)
+        messages_final.reverse()
+    for each in messages_final:
+        await  channel.send(each)
+    else:
+        await  msg.channel.send('channel name not found')
+    
+    
+        
 
     
     
-    messages_final.reverse()
-    for each in messages_final:
-        await  channel.send(each)
+    
 
 
 
