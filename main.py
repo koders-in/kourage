@@ -106,8 +106,6 @@ async def take_reaction(ctx, timeout=1200.0):
 async def ff(msg):
     #to get last message
     mos=[]
-    loop_itterator=1
-    channel_id1=msg.channel.id
     last_n_messages=int(msg.message.content.split(' ')[1])+1
     if last_n_messages-1 > 5:
         await  msg.channel.send(f"maximum masseges limit to be forwarded is 5 you have entered {last_n_messages-1}")
