@@ -27,7 +27,6 @@ logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
 import config as CONFIG  # Capitals for global
 import embeds as EMBEDS  # Capitals for global
 import gsheet as GSHEET  # Capital for global
-import attendance_info as attendance_info
 import fastforward as ff_id
 
 class Logger:
@@ -105,9 +104,12 @@ async def take_reaction(ctx, timeout=1200.0):
 @commands.has_any_role("@everyone")
 async def ff(msg):
     #to get last message
-    mos=[]
+    messages_final=[]
+    message_to_be_forwarded=[]
+    loop_itterator=1
+    m_id=[]
     last_n_messages=int(msg.message.content.split(' ')[1])+1
-    if last_n_messages-1 > 5:
+    if last_n_messages-1 > 10:
         await  msg.channel.send(f"maximum masseges limit to be forwarded is 5 you have entered {last_n_messages-1}")
         return
 
@@ -116,88 +118,18 @@ async def ff(msg):
     channel_id2=ff_id.get_channel_id(f'{channel_name}')
     channel=bot.get_channel(channel_id2)
     
-   
-
-    if (last_n_messages-1)==1:
-        m_id=str(message_details[1]).split(' ')[1].split('=')[1]
-        
-        message_to_be_forwarded=await msg.fetch_message(m_id)
-        mos.append(message_to_be_forwarded.content)
-        await  channel.send(message_to_be_forwarded.content)
-    
-    if (last_n_messages-1)==2:
-        m_id1=str(message_details[1]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded1=await msg.fetch_message(m_id1)
-        mos.append(message_to_be_forwarded1.content)
-        
-
-        m_id2=str(message_details[2]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded2=await msg.fetch_message(m_id2)
-        mos.append(message_to_be_forwarded2.content)
-
-    if (last_n_messages-1)==3:
-        m_id1=str(message_details[1]).split(' ')[1].split('=')[1]
-        
-        message_to_be_forwarded1=await msg.fetch_message(m_id1)
-        mos.append(message_to_be_forwarded1.content)
-        
-
-        m_id2=str(message_details[2]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded2=await msg.fetch_message(m_id2)
-        mos.append(message_to_be_forwarded2.content)
-
-        m_id3=str(message_details[3]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded3=await msg.fetch_message(m_id3)
-        mos.append(message_to_be_forwarded3.content)
-
-    if (last_n_messages-1)==4:
-        m_id1=str(message_details[1]).split(' ')[1].split('=')[1]
-        
-        message_to_be_forwarded1=await msg.fetch_message(m_id1)
-        mos.append(message_to_be_forwarded1.content)
-        
-
-        m_id2=str(message_details[2]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded2=await msg.fetch_message(m_id2)
-        mos.append(message_to_be_forwarded2.content)
-
-        m_id3=str(message_details[3]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded3=await msg.fetch_message(m_id3)
-        mos.append(message_to_be_forwarded3.content)
-
-        m_id4=str(message_details[4]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded4=await msg.fetch_message(m_id4)
-        mos.append(message_to_be_forwarded4.content)
-    
-    
-    if (last_n_messages-1)==5:
-        m_id1=str(message_details[1]).split(' ')[1].split('=')[1]
-        
-        message_to_be_forwarded1=await msg.fetch_message(m_id1)
-        mos.append(message_to_be_forwarded1.content)
-        
-
-        m_id2=str(message_details[2]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded2=await msg.fetch_message(m_id2)
-        mos.append(message_to_be_forwarded2.content)
-
-        m_id3=str(message_details[3]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded3=await msg.fetch_message(m_id3)
-        mos.append(message_to_be_forwarded3.content)
-
-        m_id4=str(message_details[4]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded4=await msg.fetch_message(m_id4)
-        mos.append(message_to_be_forwarded4.content)
-
-        m_id5=str(message_details[5]).split(' ')[1].split('=')[1]
-        message_to_be_forwarded5=await msg.fetch_message(m_id5)
-        mos.append(message_to_be_forwarded5.content)
-
-
+    while loop_itterator<last_n_messages:
+        m_id.append(str(message_details[l]).split(' ')[1].split('=')[1])
+        l=l+1
+    for each_id in m_id:
+        message_to_be_forwarded.append(await msg.fetch_message(each_id))
+    for each_item in message_to_be_forwarded:
+        messages_final.append(each_item.content)
 
     
-    mos.reverse()
-    for each in mos:
+    
+    messages_final.reverse()
+    for each in messages_final:
         await  channel.send(each)
 
 
@@ -340,7 +272,6 @@ async def poll(msg, question, *options: str):
 if __name__ == "__main__":
     try:
         attendance_task.start()
-        attendance_info.initialize()
         bot.run(CONFIG.TOKEN)
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
