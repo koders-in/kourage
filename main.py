@@ -27,7 +27,6 @@ logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
 import config as CONFIG  # Capitals for global
 import embeds as EMBEDS  # Capitals for global
 import gsheet as GSHEET  # Capital for global
-import fastforward as ff_id
 
 class Logger:
     def __init__(self, app):
@@ -114,13 +113,11 @@ async def ff(msg):
         return
 
     message_details= await msg.channel.history(limit=int(last_n_messages)).flatten() 
-    channel_name=msg.message.content.split(' ')[2]
-    channel_id2=ff_id.get_channel_id(f'{channel_name}')
-    channel=bot.get_channel(channel_id2)
-    
+    channel_name=msg.message.content.split(' ')[2] 
+    channel = discord.utils.get(bot.get_all_channels(), name=f'{channel_name}')
     while loop_itterator<last_n_messages:
-        m_id.append(str(message_details[l]).split(' ')[1].split('=')[1])
-        l=l+1
+        m_id.append(str(message_details[loop_itterator]).split(' ')[1].split('=')[1])
+        loop_itterator=loop_itterator+1
     for each_id in m_id:
         message_to_be_forwarded.append(await msg.fetch_message(each_id))
     for each_item in message_to_be_forwarded:
