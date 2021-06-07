@@ -2,10 +2,7 @@
 
 ## cronjob : At every 6 hours perday
 #.0 */6 * * *
-
-## Enter your webhook API address here.
 webhook="https://discordapp.com/api/webhooks/850260151553359883/a5_fg3be71ADtQD_j--Uj0oIR7tWHyg_4hwEiGKE9rIP9fqmCDmtldXbHKB2ODmMYDkI"
-
 ret_error() {
 	if [[ $2 = "true" ]]
 	then
