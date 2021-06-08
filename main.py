@@ -115,9 +115,8 @@ async def ff(msg):
 
     message_details= await msg.channel.history(limit=int(last_n_messages)).flatten() 
     channel_name=msg.message.content.split(' ')[2]
-    channel=channel_name.split('#')[1]
-    legnth=len(channel)
-    channel=channel[0:(legnth-1)]
+    legnth=len(channel_name)
+    channel=channel_name[2:(legnth-1)]
     channel=bot.get_channel(int(channel))
     if channel is not None:
         while loop_itterator<last_n_messages:
