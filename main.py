@@ -100,49 +100,38 @@ async def take_reaction(ctx, timeout=1200.0):
         await take_reaction(ctx, timeout=timeout)
 
 @bot.command()
-@commands.has_any_role("@everyone")
+@commands.has_any_role("@Koders")
 async def ff(msg):
-    #to get last message
-    
-    messages_final=[]
-    message_to_be_forwarded=[]
-    loop_itterator=1
-    m_id=[]
+    """
+    This module fast forwards the messages from one channel to another
+    Usage: prefix + `ff` + number_of_message =< 10 + channel_name
+    Return: None
+    """
     last_n_messages=int(msg.message.content.split(' ')[1])+1
-    if last_n_messages-1 > 10:
-        await  msg.channel.send(f"maximum masseges limit to be forwarded is 10 you have entered {last_n_messages-1}")
+    max_messsages=100
+    if last_n_messages-1 > max_messages:
+        await msg.channel.send(f"maximum masseges limit to be forwarded is {max_messsages} you have entered {last_n_messages-1}")
         return
 
-    message_details= await msg.channel.history(limit=int(last_n_messages)).flatten() 
+    message_details=await msg.channel.history(limit=int(last_n_messages)).flatten() 
     channel_name=msg.message.content.split(' ')[2]
-    legnth=len(channel_name)
-    channel=channel_name[2:(legnth-1)]
-    channel=bot.get_channel(int(channel))
+    channel_name=channel_name[2:(len(channel_name)-1)]
+    channel=bot.get_channel(int(channel_name))
     if channel is not None:
+        loop_itterator=1
+        m_id=[]
+        message_to_be_forwarded=[]
         while loop_itterator<last_n_messages:
             m_id.append(str(message_details[loop_itterator]).split(' ')[1].split('=')[1])
             loop_itterator=loop_itterator+1
         for each_id in m_id:
-            message_to_be_forwarded.append(await msg.fetch_message(each_id))
-        for each_item in message_to_be_forwarded:
-            messages_final.append(each_item.content)
-        messages_final.reverse()
-        for each in messages_final:
-            await  channel.send(each)
+            message_to_be_forwarded.append((await msg.fetch_message(each_id)).content)
+        message_to_be_forwarded.reverse()
+        for each in message_to_be_forwarded:
+            await channel.send(each)
     else:
-        await  msg.channel.send('channel name not found')
+        await msg.channel.send('Channel name not found')
     
-    
-        
-
-    
-    
-    
-
-
-
-
-
 async def take_attendance_morning(ctx):
     embed = EMBEDS.attendance("11:00", "14:00")
     msg = await ctx.send(embed=embed)
