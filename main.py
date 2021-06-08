@@ -110,12 +110,15 @@ async def ff(msg):
     m_id=[]
     last_n_messages=int(msg.message.content.split(' ')[1])+1
     if last_n_messages-1 > 10:
-        await  msg.channel.send(f"maximum masseges limit to be forwarded is 5 you have entered {last_n_messages-1}")
+        await  msg.channel.send(f"maximum masseges limit to be forwarded is 10 you have entered {last_n_messages-1}")
         return
 
     message_details= await msg.channel.history(limit=int(last_n_messages)).flatten() 
-    channel_name=msg.message.content.split(' ')[2] 
-    channel = discord.utils.get(bot.get_all_channels(), name=f'{channel_name}')
+    channel_name=msg.message.content.split(' ')[2]
+    channel=channel_name.split('#')[1]
+    legnth=len(channel)
+    channel=channel[0:(legnth-1)]
+    channel=bot.get_channel(int(channel))
     if channel is not None:
         while loop_itterator<last_n_messages:
             m_id.append(str(message_details[loop_itterator]).split(' ')[1].split('=')[1])
@@ -125,8 +128,8 @@ async def ff(msg):
         for each_item in message_to_be_forwarded:
             messages_final.append(each_item.content)
         messages_final.reverse()
-    for each in messages_final:
-        await  channel.send(each)
+        for each in messages_final:
+            await  channel.send(each)
     else:
         await  msg.channel.send('channel name not found')
     
