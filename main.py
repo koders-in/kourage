@@ -179,7 +179,7 @@ async def define(msg, *args):
         Logger.error("Something went wrong during parsing JSON. Reason: " + str(e))  # JSON parsing exception
         await msg.send("Can't find its meaning over the database")  # Sending message so user can read
 
-# Bug Feature 
+# Bug Command
 @bot.command()
 async def bug(ctx):
     suggestEmbed1 = discord.Embed(colour=0x28da5b)
@@ -246,8 +246,7 @@ async def bug(ctx):
     suggestEmbed3.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed3.timestamp = datetime.utcnow()
     
-    file = discord.File("result.txt")
-    sent3 = await ctx.send(embed = suggestEmbed3, file=file)
+    sent3 = await ctx.send(embed = suggestEmbed3)
 
     try:
         msg = await bot.wait_for(
@@ -267,7 +266,7 @@ async def bug(ctx):
 
     message3 = msg.attachments[0].url
         
-        
+
     suggestEmbed4 = discord.Embed(colour=0x28da5b)
     suggestEmbed4 = discord.Embed(
         title = 'Please tell me the expected vs. actual results of the Bug',
@@ -335,10 +334,56 @@ async def bug(ctx):
     sendEmbed.add_field(name='Description/Summary', value = f'{message2}', inline=False) 
     sendEmbed.add_field(name='Console log of the Bug ', value = f'{message3}', inline=False)
     sendEmbed.add_field(name='Expected vs actual results', value = f'{message4}', inline=False)
-    sendEmbed.set_image(url =  f'{message5}') 
+    sendEmbed.set_image(url =  f'{message5}')               
+
+    # ADMIN CHANNEL ID
+    channel = bot.get_channel()   
+
+    message = await channel.send(embed = sendEmbed)
+    await message.add_reaction('✅')
+    await message.add_reaction('❌')
+
+    from uuid import uuid4
+
+    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+    unique_id = event_id[48:].upper()
 
 
-    await ctx.send(embed = sendEmbed)
+    def check (reaction, user):
+        return not user.bot and message == reaction.message
+    
+    try:
+        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
+        # Role logic
+        role_string = ''
+        for role in user.roles:
+            if(role.name == '@everyone'):
+                continue
+            else:
+                role_string += role.name
+                role_string += ','
+        role_string = role_string[:-1]
+        
+        while reaction.message == message:
+            if str(reaction.emoji) == "✅":                
+                await ctx.send('Suggestion has been approved!')
+                #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                await ctx.send("Your Suggestion was: ")
+                message1 = await ctx.send(embed = sendEmbed)
+                
+                await channel.send('Suggestion has been approved!')
+                return
+            if str(reaction.emoji) == "❌":
+                await ctx.send('Suggestion has not been approved. We thank you for your valuable time!')
+                #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                await ctx.send("Your Suggestion was: ")
+                message1 = await ctx.send(embed = sendEmbed)
+                    
+                await channel.send('Suggestion has not been approved!')
+                return
+    except asyncio.TimeoutError:
+        await ctx.send("Your suggestion was timed out. Please try again!")
+        return
 
 
 # Vision command
