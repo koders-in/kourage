@@ -15,5 +15,5 @@ run_cmd() {
 	printf "${BOLD}[${SUCCESS}Success${NC}] ${SUCCESS}$2${NC}${NT}\n"
 }
 
-run_cmd "sudo docker build -t kourage ." "Docker file built."
-run_cmd "sudo docker run -e TOKEN -e OWN_TOKEN kourage" "Run"
+run_cmd "docker build -t kourage ." "Docker file built."
+run_cmd "docker run -e TOKEN -e OWN_TOKEN kourage" "Run"
