@@ -1,5 +1,6 @@
 
 set TOKEN=
+
 @echo off
 git.exe %*
 set GITBRANCH=
