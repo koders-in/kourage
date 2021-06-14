@@ -1,18 +1,29 @@
 import discord
 import platform
 import logging
+import asyncio
 import time
 from colorama import init
+from discord import channel
 from termcolor import colored
 from discord.ext.commands import bot
 from discord.ext import commands
 import attendance_info as attendance_info
+import datetime
+import matplotlib.pyplot as plt
+import requests
+from discord.utils import get
+import json
+from discord.ext.tasks import loop
 
 machine = platform.node()
 init()
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
 import config as CONFIG  # Capitals for global
+import embeds as EMBEDS
+
+attendance_marked_by=[]  #global variable
 
 class Logger:
     def __init__(self, app):
@@ -44,8 +55,118 @@ async def on_ready():  # Triggers when bot is ready
     logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
 
 
- # Ping command
+@bot.event
+async def on_member_join(member):  # Triggers when members joins the server
+    #await member.send('Thank you for joining Koders') # Have an embed there
+    role = get(member.guild.roles, id=726643908624515195)
+    await member.add_roles(role)
+    
+
+
+def check(reaction, user):
+    return str(reaction.emoji) == '⬆️' and user.bot is not True
+
+
+async def take_reaction(ctx, timeout=1200.0):
+    start = time.time()
+    try:
+        result = await bot.wait_for('reaction_add', check=check, timeout=timeout)
+    except asyncio.TimeoutError:
+        await ctx.delete()
+    else:
+        reaction, user = result
+        attendance_marked_by.append(user)
+        channel = await user.create_dm()
+        date_time = datetime.datetime.now()
+        embed = EMBEDS.attendance_dm(date_time.strftime("%D"), date_time.strftime("%H:%M:%S"), date_time.strftime("%A"))
+        await channel.send(embed=embed)
+        end = time.time()
+        timeout = timeout - (end - start)
+        logger.warning(user)
+        
+        print(attendance_marked_by)
+        r='''
+        # Write into Gsheet Username Time Date
+        GSHEET.insert(date_time.strftime("%D"), date_time.strftime("%H:%M:%S"), user)
+        logger.warning(user)'''
+        await take_reaction(ctx, timeout=timeout)
+
+
 @bot.command()
+@commands.has_any_role("@everyone")
+async def marked(msg):
+    dateandtime=str(datetime.date.today())
+    names_present=[]
+    total_names=[]
+    names_absent=[]
+    save_filename=f'./graphs/present_or_absent/present_or_absent_{dateandtime}.jpg'
+    all_members = msg.guild.get_role(852801843527417896).members
+    await msg.channel.send(all_members)
+    for each_member in all_members:
+        total_names.append(each_member)
+
+    for name in attendance_marked_by:
+        names_present.append(name)
+    for each in total_names:
+        if each in names_present:
+            print(f'{each} is present')
+        else:
+            names_absent.append(each)
+    present_people=len(names_present)
+    absent_people=len(names_absent)
+
+    for each in names_absent:
+        print(dir(each))
+
+
+    
+    mylabels=[f'Present {present_people}',f'Absent {absent_people}']
+    y=[present_people,absent_people]
+    plt.title('Present Vs Absent')
+    plt.pie(y, labels = mylabels,  startangle = 0)
+    figure = plt.gcf()
+    figure.set_size_inches(16, 8)
+    plt.savefig(save_filename)
+    plt.close()
+    await msg.send(file=discord.File(save_filename))
+
+@bot.command()
+@commands.has_any_role("@everyone")   
+async def take_attendance_morning(ctx):
+    embed = EMBEDS.attendance("11:00", "14:00")
+    msg = await ctx.send(embed=embed)
+    await msg.add_reaction(emoji="⬆️")
+    print('hi')
+    await take_reaction(msg)
+
+
+async def take_attendance_lunch(ctx):
+    embed = EMBEDS.attendance("3:00", "3:20")
+    msg = await ctx.send(embed=embed)
+    await msg.add_reaction(emoji="⬆️")
+    await take_reaction(msg)
+
+
+@loop(minutes=1)
+async def attendance_task():
+    await bot.wait_until_ready()
+    channel = bot.get_channel(852444225828159488)  # attendance channel id
+    working_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+    date_time = datetime.datetime.now()
+    for working_day in working_days:
+        if working_day == date_time.strftime("%A") and date_time.strftime("%H:%M") == "11:00":
+            logger.info("Ran morning attendance.")
+            await take_attendance_morning(channel)
+        if working_day == date_time.strftime("%A") and date_time.strftime("%H:%M") == "15:00":
+            logger.info("Ran post lunch attendance.")
+            await take_attendance_lunch(channel)
+    logger.info("Waiting for tasks...")
+
+
+
+
+@bot.command()
+@commands.has_any_role("@everyone")
 async def attendance(msg):
     await msg.send(attendance_info.func_list)
 @bot.command()
