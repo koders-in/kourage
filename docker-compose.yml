@@ -1,0 +1,15 @@
+version: '2'
+services:
+  mariadb:
+    image: 'docker.io/mariadb:10.4'
+    environment:
+      SQLITE_ROOT_PASSWORD: Champion28
+      SQLITE_DATABASE: main
+      SQLITE_USER: parth
+      SQLITE_PASSWORD: password
+      MARIADB_ROOT_PASSWORD: Champion28
+    volumes:
+      - 'mariadb:/var/lib/sqlite'
+volumes:
+  mariadb:
+    driver: local
