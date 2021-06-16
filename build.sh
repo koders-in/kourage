@@ -16,4 +16,4 @@ run_cmd() {
 }
 
 run_cmd "docker build -t kourage ." "Docker file built."
-run_cmd "docker run -e TOKEN -e OWN_TOKEN kourage" "Run"
+run_cmd "docker run -d -e TOKEN -e OWN_TOKEN kourage" "Run"
