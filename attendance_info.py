@@ -1,35 +1,33 @@
 import datetime
 import matplotlib.pyplot as plt
 import time
-
 from numpy import save
+
 # GLOBAL VALUES
 data=[]
 dates=[]
 names=[]
 attendance={}
 attendees={}
-func_list='''   For your attendance type ~my_attendance
-                For attendance by name attendance type ~overall_attendance_of some_name
-                For total attendance type ~total_attendance
-                For weekly attendance type ~weekly_attendance
-                For monthly attendance type ~monthly_attendance 
-                For custom bar graph of some no of days type ~custom_days_bar of no of days 
-                For pie graph for person type ~pie_graph_of somename
-                For bar graph of comparision type ~compare_pie names seperated by a ,
-                For bar graph of comparision type ~compare_bar names seperated by a ,
-                for dates absent of some person type ~dates_absent_of name
-                for dates present of some person type ~dates_present_of name
-                for dates weekly absent of some person type ~weekly_dates_absent_of name
-                for dates weekly present of some person type ~weekly_dates_present_of name
-                for dates monthly absent of some person type ~monthly_dates_absent_of name
-                for dates monthly present of some person type ~monthly_dates_present_of name
-                for dates custom absent of some person type ~custom_dates_absent_of name days
-                for dates custom present of some person type ~custom_dates_present_of name days'''
-
-
-
-
+func_list="""
+For your attendance type ~my_attendance
+For attendance by name attendance type ~overall_attendance_of some_name
+For total attendance type ~total_attendance
+For weekly attendance type ~weekly_attendance
+For monthly attendance type ~monthly_attendance 
+For custom bar graph of some no of days type ~custom_days_bar of no of days 
+For pie graph for person type ~pie_graph_of somename
+For bar graph of comparision type ~compare_pie names seperated by a ,
+For bar graph of comparision type ~compare_bar names seperated by a ,
+for dates absent of some person type ~dates_absent_of name
+for dates present of some person type ~dates_present_of name
+for dates weekly absent of some person type ~weekly_dates_absent_of name
+for dates weekly present of some person type ~weekly_dates_present_of name
+for dates monthly absent of some person type ~monthly_dates_absent_of name
+for dates monthly present of some person type ~monthly_dates_present_of name
+for dates custom absent of some person type ~custom_dates_absent_of name days
+for dates custom present of some person type ~custom_dates_present_of name days
+"""
 
 def input_csv():
     with open("data.csv", "r") as file:
@@ -49,7 +47,6 @@ def to_get_names():
             name=name.split('#')[0]
             name=name.lower()
             names.append(name)
-
 
 def to_get_dict():
     for each in dates:
@@ -131,8 +128,6 @@ def last_dates(no_of_days):
         
     return dated
 
-
-
 def visualize_bar_overall_attendance():
     dateandtime=str(datetime.date.today())
     save_filename=f'./graphs/overall_bar_graph/overall_{dateandtime}.jpg'
@@ -164,8 +159,6 @@ def visualize_pie_graph_search_by_name(name):
     plt.savefig(save_filename)
     plt.close()
     return(save_filename)
-    
-
 
 def compare_bar(names_to_compare):
     dateandtime=str(datetime.date.today())
@@ -218,9 +211,7 @@ def weekly_bar():
         counter=weekly_name.count(each)
         weekly_attendees[f'{each}']=counter
     y =list(weekly_attendees.values())
-
     x =list(weekly_attendees.keys())
-
     y.append(10)
     x.append('Total attendance')
     plt.barh(x,y, color='brown')
@@ -230,7 +221,6 @@ def weekly_bar():
     plt.savefig(save_filename)
     plt.close()
     return(save_filename)
-
 
 def monthly_bar():
     dateandtime=str(datetime.date.today())
@@ -283,9 +273,7 @@ def custom_bar(no_of_days):
         counter=custom_name.count(each)
         custom_attendees[f'{each}']=counter
     y =list(custom_attendees.values())
-
     x =list(custom_attendees.keys())
-
     y.append(total_dates*2)
     x.append('Total attendance')
     plt.barh(x,y, color='cyan')
@@ -363,7 +351,6 @@ def month_dates_absent(name):
         if date not in present_dates:
             monthly_absent_dates.append(date)
     return monthly_absent_dates
-
 
 def month_dates_present(name):
     monthly_present_dates=[]

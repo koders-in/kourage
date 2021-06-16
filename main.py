@@ -7,6 +7,7 @@ from termcolor import colored
 from discord.ext.commands import bot
 from discord.ext import commands
 import attendance_info as attendance_info
+import os
 
 machine = platform.node()
 init()
@@ -31,18 +32,17 @@ class Logger:
         print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', color))
 
 
-logger = Logger("kourage-boilerplate")
-
+logger = Logger("kourage-attendance")
 # FOR TESTING
 # bot = commands.Bot(command_prefix="!")
 
 # FOR PRODUCTION
 bot = commands.Bot(command_prefix="~")
+VERSION = "0.2.0"
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
-
+    logger.warning("Kourage is running at version {0}".format(VERSION))
 
  # Ping command
 @bot.command()
@@ -84,6 +84,7 @@ async def pie_graph_of(msg):
     name=name.split()[1]
     save_filename=attendance_info.visualize_pie_graph_search_by_name(name)
     await msg.channel.send(file=discord.File(save_filename))
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def compare_bar(msg):
@@ -92,6 +93,7 @@ async def compare_bar(msg):
     names=names.split(',')
     save_filename=attendance_info.compare_bar(names)
     await msg.channel.send(file=discord.File(save_filename))
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def compare_pie(msg):
@@ -100,6 +102,7 @@ async def compare_pie(msg):
     names=names.split(',')
     save_filename=attendance_info.pie_compare(names)
     await msg.channel.send(file=discord.File(save_filename))
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def dates_absent_of(msg):
@@ -107,6 +110,7 @@ async def dates_absent_of(msg):
     name=name.lower()
     dates_absent=attendance_info.days_absent(name)
     await msg.send(f'Name-> {name}    dates absent=>{dates_absent}')
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def dates_present_of(msg):
@@ -114,6 +118,7 @@ async def dates_present_of(msg):
     name=name.lower()
     dates_present=attendance_info.days_present(name)
     await msg.send(f'Name-> {name}    dates present=>{dates_present}')
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def weekly_dates_absent_of(msg):
@@ -121,6 +126,7 @@ async def weekly_dates_absent_of(msg):
     name=name.lower()
     dates_absent=attendance_info.week_dates_absent(name)
     await msg.send(f'Name-> {name}    dates absent=>{dates_absent}')
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def weekly_dates_present_of(msg):
@@ -128,6 +134,7 @@ async def weekly_dates_present_of(msg):
     name=name.lower()
     dates_present=attendance_info.week_dates_present(name)
     await msg.send(f'Name-> {name}    dates absent=>{dates_present}')
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def monthly_dates_absent_of(msg):
@@ -135,6 +142,7 @@ async def monthly_dates_absent_of(msg):
     name=name.lower()
     dates_absent=attendance_info.month_dates_absent(name)
     await msg.send(f'Name-> {name}    dates absent=>{dates_absent}')
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def monthly_dates_present_of(msg):
@@ -142,6 +150,7 @@ async def monthly_dates_present_of(msg):
     name=name.lower()
     dates_present=attendance_info.month_dates_present(name)
     await msg.send(f'Name-> {name}    dates present=>{dates_present}')
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def custom_dates_absent_of(msg):
@@ -150,6 +159,7 @@ async def custom_dates_absent_of(msg):
     no_of_days=int(msg.message.content.split(' ')[2])
     dates_absent=attendance_info.custom_dates_absent(name,no_of_days)
     await msg.send(f'Name-> {name}    dates absent=>{dates_absent}') 
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def custom_dates_present_of(msg):
@@ -158,6 +168,7 @@ async def custom_dates_present_of(msg):
     no_of_days=int(msg.message.content.split(' ')[2])
     dates_absent=attendance_info.custom_dates_present(name,no_of_days)
     await msg.send(f'Name-> {name}    dates absent=>{dates_absent}') 
+
 @bot.command()
 @commands.has_any_role("@everyone")
 async def custom_days_bar(msg):
@@ -165,10 +176,9 @@ async def custom_days_bar(msg):
     save_filename=attendance_info.custom_bar(no_of_days)
     await msg.channel.send(file=discord.File(save_filename))
 
-
 if __name__ == "__main__":
     try:
         attendance_info.initialize()
-        bot.run(CONFIG.TOKEN)
+        bot.run(os.enivron.get('TOKEN'))
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
