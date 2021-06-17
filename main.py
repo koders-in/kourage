@@ -4,6 +4,8 @@ import logging
 import time
 import datetime
 import asyncio
+import base64
+from uuid import uuid4
 import sqlite3
 from sqlite3.dbapi2 import Cursor
 from colorama import init
@@ -43,12 +45,11 @@ logger = Logger("kourage-boilerplate")
 bot = commands.Bot(command_prefix="~")
 
 # Create User Profile Command
-@bot.command()
 async def user(ctx):
-    suggestEmbed1 = discord.Embed(colour=0x28da5b)
     suggestEmbed1 = discord.Embed(
+        colour = 0x28da5b,
         title = 'Please tell me your Name',
-        description = "  Write your full name . "
+        description = " Write your full name ."
     )
     suggestEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed1.set_footer(text="Made with ❤️️  by Koders")
@@ -72,11 +73,11 @@ async def user(ctx):
         await ctx.send('Cancelling due to timeout.', delete_after = 120)
 
     cursor = sqlite3.connect('main.sqlite')
-        
-    suggestEmbed2 = discord.Embed(colour=0x28da5b)
+    
     suggestEmbed2 = discord.Embed(
+        colour = 0x28da5b,
         title = 'Please tell me your Phone Number',
-        description = """ Write you phone number. """
+        description = """ Write your phone number. """
         )
     suggestEmbed2.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed2.set_footer(text="Made with ❤️️  by Koders")
@@ -98,9 +99,9 @@ async def user(ctx):
     except asyncio.TimeoutError:
         await sent2.delete()
         await ctx.send('Cancelling due to timeout.', delete_after = 300)
-    
-    suggestEmbed3 = discord.Embed(colour=0x28da5b)
+
     suggestEmbed3 = discord.Embed(
+        colour = 0x28da5b,
         title = 'Please tell me your Mail Id',
         description = """ Write your email id. """
     )
@@ -126,8 +127,8 @@ async def user(ctx):
         await sent3.delete()
         await ctx.send('Cancelling due to timeout.', delete_after = 300)
         
-    suggestEmbed4 = discord.Embed(colour=0x28da5b)
     suggestEmbed4 = discord.Embed(
+        colour = 0x28da5b,
         title = 'Please tell me your Birthday',
         description = " Write your birthday date in dd/mm/yyyy in this format. "
     )
@@ -152,89 +153,182 @@ async def user(ctx):
         await sent4.delete()
         await ctx.send('Cancelling due to timeout.', delete_after = 300)
         
-    suggestEmbed5 = discord.Embed(colour=0x28da5b)
     suggestEmbed5 = discord.Embed(
-        title = 'Please tell me your WhatsApp Number',
-        description = " Write your WhatsApp phone number. "
+        colour = 0x28da5b,
+        title = 'Could you please tell me your WhatsApp Number ?',
+        description = " Select your response with green tick for yes and red cross if not willing to share. "
     )
     suggestEmbed5.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     
     suggestEmbed5.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed5.timestamp = datetime.datetime.utcnow()
-    
-    sent5 = await ctx.send(embed = suggestEmbed5)
+
+    message = await ctx.send(embed = suggestEmbed5)
+    await message.add_reaction('✅')
+    await message.add_reaction('❌')
+
+    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+    unique_id = event_id[48:].upper()
+
+    def check (reaction, user):
+        return not user.bot and message == reaction.message
+
     try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=300.0,
-            check=lambda message: message.author == ctx.author
-        )
+        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run        
+        if str(reaction.emoji) == "✅":
+            await ctx.send('Thanks for letting us know your whatsapp number!')
+            suggestEmbed9 = discord.Embed(
+                colour = 0x28da5b,
+                title = 'Please tell me your WhatsApp Number.',
+                description = " Write you phone number. "
+                )
+            suggestEmbed9.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+            suggestEmbed9.set_footer(text="Made with ❤️️  by Koders")
+            suggestEmbed9.timestamp = datetime.datetime.utcnow()
 
-        if msg:
-            await sent5.delete()
-            message5 = msg.content
-            await msg.delete()
+            sent5 = await ctx.send(embed = suggestEmbed9)
 
+            try:
+                msg = await bot.wait_for(
+                    "message",
+                    timeout=300.0,
+                    check=lambda message: message.author == ctx.author
+                )
+
+                if msg:
+                    await sent5.delete()
+                    message5 = msg.content
+                    await msg.delete()
+
+            except asyncio.TimeoutError:
+                await sent5.delete()
+                await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        
+        if str(reaction.emoji) == "❌":
+           # await ctx.send('No!')
+            message5 = None
+               
     except asyncio.TimeoutError:
-        await sent5.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300) 
-
-    suggestEmbed6 = discord.Embed(colour=0x28da5b)
+        await ctx.send("Time out. Please try again!")
+      
     suggestEmbed6 = discord.Embed(
-        title = 'Please tell me your Facebook Id',
-        description = " Write your Facebook Id username. "
+        colour = 0x28da5b,
+        title = 'Could you please tell me your Facebook Id ?',
+        description = " Select your response with green tick for yes and red cross if not willing to share. "
     )
     suggestEmbed6.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed6.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed6.timestamp = datetime.datetime.utcnow()
     
-    sent6 = await ctx.send(embed = suggestEmbed6)
+    message = await ctx.send(embed = suggestEmbed6)
+    await message.add_reaction('✅')
+    await message.add_reaction('❌')
+
+    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+    unique_id = event_id[48:].upper()
+
+    def check (reaction, user):
+        return not user.bot and message == reaction.message
+
     try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=300.0,
-            check=lambda message: message.author == ctx.author
-        )
+        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run        
+        if str(reaction.emoji) == "✅":
+            await ctx.send('Thanks for letting us know your Facebook Id!')
+            suggestEmbed10 = discord.Embed(
+                colour = 0x28da5b,
+                title = 'Please tell me your Facebook Id.',
+                description = " Write you Facebook Id. "
+                )
+            suggestEmbed10.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+            suggestEmbed10.set_footer(text="Made with ❤️️  by Koders")
+            suggestEmbed10.timestamp = datetime.datetime.utcnow()
 
-        if msg:
-            await sent6.delete()
-            message6 = msg.content
-            await msg.delete()
+            sent6 = await ctx.send(embed = suggestEmbed10)
 
+            try:
+                msg = await bot.wait_for(
+                    "message",
+                    timeout=300.0,
+                    check=lambda message: message.author == ctx.author
+                )
+
+                if msg:
+                    await sent6.delete()
+                    message6 = msg.content
+                    await msg.delete()
+
+            except asyncio.TimeoutError:
+                await sent6.delete()
+                await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        
+        if str(reaction.emoji) == "❌":
+           # await ctx.send('No!')
+            message6 = None
+               
     except asyncio.TimeoutError:
-        await sent6.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        await ctx.send("Time out. Please try again!")
 
-    suggestEmbed7 = discord.Embed(colour=0x28da5b)
     suggestEmbed7 = discord.Embed(
-        title = 'Please tell me your Instagram Id username',
-        description = "  Write your Instagram Id username. "
+        colour = 0x28da5b,
+        title = 'Could you please tell me your Instagram Id username ?',
+        description = " Select your response with green tick for yes and red cross if not willing to share. "
     )
     suggestEmbed7.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed7.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed7.timestamp = datetime.datetime.utcnow()
     
-    sent7 = await ctx.send(embed = suggestEmbed7)
+    message = await ctx.send(embed = suggestEmbed7)
+    await message.add_reaction('✅')
+    await message.add_reaction('❌')
+
+    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+    unique_id = event_id[48:].upper()
+
+    def check (reaction, user):
+        return not user.bot and message == reaction.message
+
     try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=300.0,
-            check=lambda message: message.author == ctx.author
-        )
+        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run        
+        if str(reaction.emoji) == "✅":
+            await ctx.send('Thanks for letting us know your Instagram Id!')
+            suggestEmbed11 = discord.Embed(
+                colour = 0x28da5b,
+                title = 'Please tell me your Instagram Id.',
+                description = " Write you Instagram Id. "
+                )
+            suggestEmbed11.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+            suggestEmbed11.set_footer(text="Made with ❤️️  by Koders")
+            suggestEmbed11.timestamp = datetime.datetime.utcnow()
 
-        if msg:
-            await sent7.delete()
-            message7 = msg.content
-            await msg.delete()
+            sent7 = await ctx.send(embed = suggestEmbed11)
 
+            try:
+                msg = await bot.wait_for(
+                    "message",
+                    timeout=300.0,
+                    check=lambda message: message.author == ctx.author
+                )
+
+                if msg:
+                    await sent7.delete()
+                    message7 = msg.content
+                    await msg.delete()
+
+            except asyncio.TimeoutError:
+                await sent7.delete()
+                await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        
+        if str(reaction.emoji) == "❌":
+           # await ctx.send('No!')
+            message7 = None
+               
     except asyncio.TimeoutError:
-        await sent7.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300)    
+        await ctx.send("Time out. Please try again!")
 
-    suggestEmbed8 = discord.Embed(colour=0x28da5b)
     suggestEmbed8 = discord.Embed(
+        colour = 0x28da5b,
         title = 'Please tell me your Redmine API Key',
-        description = "  Write your Redmine API Key. "
+        description = " Write your Redmine API Key. "
     )
     suggestEmbed8.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed8.set_footer(text="Made with ❤️️  by Koders")
@@ -251,16 +345,19 @@ async def user(ctx):
         if msg:
             await sent8.delete()
             message8 = msg.content
+            message9 = message8[:-3] + '***'
+            message8 = base64.b64encode(message8.encode("ascii"))
+           # print(message9)
             await msg.delete()
 
     except asyncio.TimeoutError:
         await sent8.delete()
         await ctx.send('Cancelling due to timeout.', delete_after = 300)
         
-    sendEmbed = discord.Embed(colour=0x28da5b)
     sendEmbed = discord.Embed(
+        colour = 0x28da5b,
         title = 'User Profile',
-        description = " Keep it brief and use correct terms. A best practice is to include the name of the feature where you found an issue. A good example could be 'CART - Unable to add new item to my cart'. "
+        description = " All the information about the user profile like name, phone, mail and so on. "
     )
     sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     sendEmbed.set_footer(text="Made with ❤️️  by Koders")
@@ -273,12 +370,13 @@ async def user(ctx):
     sendEmbed.add_field(name = 'WhatsApp Number', value = f'{message5}', inline=False) 
     sendEmbed.add_field(name='Facebook Id', value = f'{message6}', inline=False)
     sendEmbed.add_field(name='Instagram Id', value = f'{message7}', inline=False)
-    sendEmbed.add_field(name='Redmine API Key', value = f'{message8}', inline=False)
+    sendEmbed.add_field(name='Redmine API Key', value = f'{message9}', inline=False)
 
     cursor.execute('''INSERT INTO main
     (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8)) 
 
     cursor.commit()
+    #cursor.close()
 
     await ctx.send(embed = sendEmbed)
 
@@ -286,22 +384,47 @@ async def user(ctx):
 # User Profile Info Command
 @bot.command()
 async def profile(ctx, *, username):
-     
-    cursor = sqlite3.connect('main.sqlite')
-    
-    sendEmbed = discord.Embed(colour=0x28da5b)
+
+    # username = await ctx.message.mentions[0].id
+    # print(username)
+
+    conn = sqlite3.connect('main.sqlite')
+
     sendEmbed = discord.Embed(
+        colour = 0x28da5b,
         title = 'User Profile',
-        description = " Keep it brief and use correct terms. A best practice is to include the name of the feature where you found an issue. A good example could be 'CART - Unable to add new item to my cart'. "
+        description = " All the information about the user profile like name, phone, mail and so on. "
         )
     sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     sendEmbed.set_footer(text="Made with ❤️️  by Koders")
     sendEmbed.timestamp = datetime.datetime.utcnow()
 
-    data = []
-    for row in cursor.execute('''SELECT Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine FROM main WHERE Name = ?''', (username, )):
-        data.append(row)
-        print(data)
+    sendEmbed1 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'User Profile Not Found',
+        description = " This user profile doesn't exists in the database. "
+        )
+    sendEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    sendEmbed1.set_footer(text="Made with ❤️️  by Koders")
+    sendEmbed1.timestamp = datetime.datetime.utcnow()
+
+    cur = conn.cursor()
+    cur.execute('''SELECT Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine FROM main WHERE Name = ?''', (username, ))
+
+    rows =[]
+    if rows is "":
+        print(rows)
+        await ctx.send(embed = sendEmbed1)
+
+    rows = cur.fetchall()
+        
+    print(rows)
+    for row in rows:
+
+        # Decoding the Api Key 
+        message = base64.b64decode(row[7]).decode()
+        new = message[:-3] + '***'
+
         sendEmbed.add_field(name='Name', value = row[0], inline=False)   
         sendEmbed.add_field(name='Phone Number', value = row[1], inline=False) 
         sendEmbed.add_field(name='Mail Id', value = row[2], inline=False)
@@ -309,63 +432,94 @@ async def profile(ctx, *, username):
         sendEmbed.add_field(name='WhatsApp Number', value = row[4], inline=False) 
         sendEmbed.add_field(name='Facebook Id', value = row[5], inline=False)
         sendEmbed.add_field(name='Instagram Id', value = row[6], inline=False)
-        sendEmbed.add_field(name='Redmine API Key', value = row[7], inline=False)
+        sendEmbed.add_field(name='Redmine API Key', value = new, inline=False)
 
-        if not data:
-            print(data)
-            sendEmbed1 = discord.Embed(colour=0x28da5b)
-            sendEmbed1 = discord.Embed(
-                title = 'User Profile Not Found',
-                description = " This user profile doesn't exists in the database. "
-             )
-            sendEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-            sendEmbed1.set_footer(text="Made with ❤️️  by Koders")
-            sendEmbed1.timestamp = datetime.datetime.utcnow()
-
-            await ctx.send(embed = sendEmbed1)
-        
-    cursor.close()
-    await ctx.send(embed = sendEmbed)
+        await ctx.send(embed = sendEmbed)
+    
+    cur.close()
+    
 
 # Update Profile Command
 @bot.command()
 async def update(ctx, Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine):
 
-    conn = None
-    try:
-        conn = sqlite3.connect('main.sqlite')
-        sendEmbed = discord.Embed(colour=0x28da5b)
-        sendEmbed = discord.Embed(
+    embed = discord.Embed(
+            colour = 0x28da5b,
             title = 'User Profile',
             description = " All the information about the user profile like name, phone, mail and so on. "
             )
-        sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-        sendEmbed.set_footer(text="Made with ❤️️  by Koders")
-        sendEmbed.timestamp = datetime.datetime.utcnow()
+    embed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    embed.set_footer(text="Made with ❤️️  by Koders")
+    embed.timestamp = datetime.datetime.utcnow()
+    
+    embed.add_field(name="Which user profile feature you want to update ?", value=f'''
+     :one: {'Name'}
 
-        cur = conn.cursor()
+     :two: {'Phone Number'}
 
-        cur.execute('''UPDATE main 
-        SET Phone = ?, Mail = ?, Birthday = ?, WhatsApp = ?, Facebook = ?, Instagram = ?, Redmine = ? WHERE Name = ?''', 
-        ( Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine , Name, ))
-        rows = cur.fetchall()
-        for row in rows:
-            sendEmbed.add_field(name='Name', value = row[0] or None, inline=False)   
-            sendEmbed.add_field(name='Phone Number', value = row[1] or None, inline=False) 
-            sendEmbed.add_field(name='Mail Id', value = row[2] or None, inline=False)
-            sendEmbed.add_field(name='Birthday', value = row[3] or None, inline=False)
-            sendEmbed.add_field(name='WhatsApp Number', value = row[4] or None, inline=False) 
-            sendEmbed.add_field(name='Facebook Id', value = row[5] or None, inline=False)
-            sendEmbed.add_field(name='Instagram Id', value = row[6] or None, inline=False)
-            sendEmbed.add_field(name='Redmine API Key', value = row[7] or None, inline=False)
+     :three: {'Mail Id'}
 
-        conn.commit()
-        cur.close()
+     :four: {'Birthday'} 
 
-    except Exception as e:
-        print(e)
+     :five: {'WhatsApp Number'}
 
-    await ctx.send(embed = sendEmbed)
+     :six: {'Facebook Id'}
+
+     :seven: {'Instagram Id'} 
+
+     :eight: {'Redmine API Key'}''', inline = False)
+
+    message = await ctx.send(embed=embed)
+
+    await message.add_reaction("1️⃣")
+    await message.add_reaction("2️⃣")
+    await message.add_reaction("3️⃣")
+    await message.add_reaction("4️⃣")
+    await message.add_reaction("5️⃣")
+    await message.add_reaction("6️⃣")
+    await message.add_reaction("7️⃣")
+    await message.add_reaction("8️⃣")
+
+    conn = sqlite3.connect('main.sqlite')
+    sendEmbed = discord.Embed(
+        colour=0x28da5b,
+        title = 'User Profile',
+        description = " All the information about the user profile like name, phone, mail and so on. "
+        )
+    sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    sendEmbed.set_footer(text="Made with ❤️️  by Koders")
+    sendEmbed.timestamp = datetime.datetime.utcnow()
+
+    cur = conn.cursor()
+
+    cur.execute('''UPDATE main 
+    SET Phone = ?, Mail = ?, Birthday = ?, WhatsApp = ?, Facebook = ?, Instagram = ?, Redmine = ? WHERE Name = ?''', 
+    ( Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine , Name, ))
+
+    conn.commit()
+
+    cur.execute('''SELECT Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine FROM main WHERE Name = ?''', (Name, ))
+
+    rows = cur.fetchall()
+
+    for row in rows:
+
+        # Decoding the Api Key 
+        message = base64.b64decode(row[7]).decode()
+        new = message[:-3] + '***'
+
+        sendEmbed.add_field(name='Name', value = row[0], inline=False)   
+        sendEmbed.add_field(name='Phone Number', value = row[1], inline=False) 
+        sendEmbed.add_field(name='Mail Id', value = row[2], inline=False)
+        sendEmbed.add_field(name='Birthday', value = row[3], inline=False)
+        sendEmbed.add_field(name='WhatsApp Number', value = row[4], inline=False) 
+        sendEmbed.add_field(name='Facebook Id', value = row[5], inline=False)
+        sendEmbed.add_field(name='Instagram Id', value = row[6], inline=False)
+        sendEmbed.add_field(name='Redmine API Key', value = new, inline=False)
+
+        await ctx.send(embed = sendEmbed)
+
+    cur.close()
 
 
 @bot.event
