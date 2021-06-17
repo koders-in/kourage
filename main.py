@@ -50,7 +50,7 @@ bot = commands.Bot(command_prefix="~")
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.success("Kourage is running at version {0}".format(os.environ.get("VERSION")))
+    logger.success("Kourage is running at version {0}".format("0.1.0"))
 
 # Suggestion command
 @bot.command()
