@@ -40,7 +40,7 @@ bot = commands.Bot(command_prefix="~")
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.warning("Kourage is running at version {0}".format(os.environ.get("VERSION")))
+    logger.warning("Kourage is running at version {0}".format("0.1.0"))
 
 @bot.command()
 @commands.has_any_role("@everyone")
