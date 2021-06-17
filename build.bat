@@ -1,6 +1,7 @@
 
 set TOKEN=
 
+
 @echo off
 git.exe %*
 set GITBRANCH=
@@ -15,5 +16,5 @@ if "%GITBRANCH%" == "" (
 docker build -t %GITBRANCH% .
 if errorlevel 1 echo Unsuccessful built
 
-docker run -e TOKEN=%TOKEN% %GITBRANCH%
+docker run -e TOKEN=%TOKEN%  %GITBRANCH%
 if errorlevel 1 echo Failed at running the container
