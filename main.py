@@ -6,12 +6,12 @@ from colorama import init
 from termcolor import colored
 from discord.ext.commands import bot
 from discord.ext import commands
-
+import os
 machine = platform.node()
 init()
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
-import config as CONFIG  # Capitals for global
+
 
 class Logger:
     def __init__(self, app):
@@ -40,7 +40,7 @@ bot = commands.Bot(command_prefix="~")
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
+    logger.warning("Kourage is running at version {0}".format("0.1.0"))
 
 @bot.command()
 @commands.has_any_role("@everyone")
@@ -83,6 +83,6 @@ async def ff(msg):
 
 if __name__ == "__main__":
     try:
-        bot.run(CONFIG.TOKEN)
+        bot.run(os.environ.get("TOKEN"))
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
