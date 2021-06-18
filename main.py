@@ -8,12 +8,13 @@ from colorama import init
 from termcolor import colored
 from discord.ext.commands import bot
 from discord.ext import commands
+import os
 
 machine = platform.node()
 init()
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
-import config as CONFIG  # Capitals for global
+
 
 class Logger:
     def __init__(self, app):
@@ -198,7 +199,7 @@ async def bug(ctx):
     sendEmbed.set_image(url =  f'{message5}')               
 
     # ADMIN CHANNEL ID
-    channel = bot.get_channel(CONFIG.ADMIN_CHANNEL_ID)  
+    channel = bot.get_channel(os.environ.get("ADMIN_CHANNEL_ID"))  
 
     message = await channel.send(embed = sendEmbed)
     await message.add_reaction('✅')
@@ -249,10 +250,10 @@ async def bug(ctx):
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
+    logger.warning("Kourage is running at version {0}".format("0.1.0"))
 
 if __name__ == "__main__":
     try:
-        bot.run("ODQ5OTQ0NzE2MzQ2OTE2ODg0.YLiisw.8XXjLNCABIQdtcKzJ1wIehEqcZo")
+        bot.run(os.environ.get("TOKEN"))
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
