@@ -52,11 +52,6 @@ async def on_ready():  # Triggers when bot is ready
 async def on_raw_reaction_add(payload):
     message_id = payload.message_id
     if message_id == int(os.environ.get("REACTION_MESSAGE_ID")):
-        # await suggestion(payload)
-        #print(payload.member)
-        #print(payload.channel_id)
-        #print(payload.guild_id)
-        #print(payload.member.avatar_url)
         await suggestion(payload)
 
 # Suggestion function
