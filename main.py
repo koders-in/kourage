@@ -14,6 +14,7 @@ import requests
 from colorama import init
 from discord.utils import get
 from discord.ext import commands
+from discord.ext.commands import CommandNotFound
 from discord.ext.tasks import loop
 from termcolor import colored
 
@@ -38,7 +39,7 @@ class Logger:
     def color(self, message, color):
         print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', color))
 
-logger = Logger("kourage-worklog")
+logger = Logger("kourage-suggestion")
 
 # FOR PRODUCTION
 bot = commands.Bot(command_prefix="~")
@@ -47,19 +48,27 @@ bot = commands.Bot(command_prefix="~")
 async def on_ready():  # Triggers when bot is ready
     logger.success("Kourage is running at version {0}".format("0.1.0"))
 
-# Suggestion command
-@bot.command()
-@commands.has_any_role("everyone")
+@bot.event
+async def on_raw_reaction_add(payload):
+    message_id = payload.message_id
+    if message_id == int(os.environ.get("REACTION_MESSAGE_ID")):
+        # await suggestion(payload)
+        #print(payload.member)
+        #print(payload.channel_id)
+        #print(payload.guild_id)
+        #print(payload.member.avatar_url)
+        await suggestion(payload)
+
+# Suggestion function
 async def suggestion(ctx):
     emojis = ['✅','❌'] 
-    await ctx.channel.purge(limit=1)
     admin_embed = discord.Embed(colour=0x28da5b)
     admin_embed=discord.Embed(title="Suggestion Bot", description="To accept the suggestion: ✅"
                                                                     "To decline the suggestion: ❌", color=0x28da5b)
     admin_embed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     admin_embed.timestamp = datetime.datetime.utcnow()
     admin_embed.set_footer(text="Made with ❤️️  by Koders")
-    admin_embed.set_author(name = f'suggested by {ctx.message.author}', icon_url = f'{ctx.author.avatar_url}')
+    admin_embed.set_author(name = f'suggested by {ctx.member}', icon_url = f'{ctx.member.avatar_url}')
     
     # Title
     title_embed = discord.Embed(colour=0x28da5b)
@@ -67,12 +76,12 @@ async def suggestion(ctx):
         title = 'Please tell me the title of the Suggestion',
         description = ' This request will timeout after a minute'
     )
-    sent = await ctx.send(embed = title_embed)
+    sent = await bot.get_channel(ctx.channel_id).send(embed = title_embed)
     try:
         msg = await bot.wait_for(
             "message",
             timeout=60.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
         
         if msg:
@@ -82,8 +91,7 @@ async def suggestion(ctx):
     
     except asyncio.TimeoutError:
         await sent.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 60.0)
-        
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 60.0)
         
     # description
     description_embed = discord.Embed(colour=0x28da5b)
@@ -91,12 +99,12 @@ async def suggestion(ctx):
         title = 'Please tell me the Description of the Suggestion',
         description = ' This request will timeout after 5 minutes'
     )
-    sent2 = await ctx.send(embed = description_embed)
+    sent2 = await bot.get_channel(ctx.channel_id).send(embed = description_embed)
     try:
         msg = await bot.wait_for(
             "message",
             timeout=300.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
         
         if msg:
@@ -106,7 +114,7 @@ async def suggestion(ctx):
     
     except asyncio.TimeoutError:
         await sent2.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300.0)
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300.0)
         
     # Unique ID
     event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
@@ -125,7 +133,7 @@ async def suggestion(ctx):
     sendEmbed.add_field(name = 'Title', value  = f'{titlemessage}')
     sendEmbed.add_field(name = 'Description', value  = f'{descriptionmessage}')
     sendEmbed.add_field(name='Ticket ID: ', value = f'{unique_id}', inline=False) 
-    sendEmbed.set_author(name = f'suggested by {ctx.message.author}', icon_url = f'{ctx.author.avatar_url}')
+    sendEmbed.set_author(name = f'suggested by {ctx.member}', icon_url = f'{ctx.member.avatar_url}')
     sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     sendEmbed.timestamp = datetime.datetime.utcnow()
     sendEmbed.set_footer(text="Made with ❤️️  by Koders")
@@ -137,17 +145,16 @@ async def suggestion(ctx):
         reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) 
 
         # Role logic for displaying the maximum authority over roles
-        role_string = ''
+        roles = []
         for role in user.roles:
             if(role.name == '@everyone'):
                 continue
             else:
-                role_string += role.name
-                role_string += ','
-        role_string = role_string[:-1]
+                roles.append(role)
         
         while reaction.message == message:
             if str(reaction.emoji) == "✅":
+                await message.delete()
                 
                 # Remarks Embed
                 remarks_embed = discord.Embed(colour=0x28da5b)
@@ -161,7 +168,7 @@ async def suggestion(ctx):
                     msg = await bot.wait_for(
                         "message",
                         timeout=300.0,
-                        check=lambda message: message.author == ctx.author
+                        check=lambda message: message.author == user
                     )
                     
                     if msg:
@@ -178,7 +185,7 @@ async def suggestion(ctx):
                 data.append(descriptionmessage)
                 data.append(unique_id)
                 data.append("Approved")
-                data.append(ctx.message.author)
+                data.append(ctx.member)
                 data.append(user)
                 data.append(remarksmessage)
                 
@@ -187,15 +194,15 @@ async def suggestion(ctx):
                     writer.writerow(data)
                 del data
                                     
-                await ctx.send(f'🙌🙌 Awesome!! Your suggestion has been Acknowledged by {user} who has these roles ({role_string}). We appreciate your efforts!')
                 sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False)
                 sendEmbed.add_field(name='Remarks: ',value = f'{remarksmessage}',inline=False)
-                await ctx.send("Your Suggestion was: ")
-                message1 = await ctx.send(embed = sendEmbed)
+                approved_channel = bot.get_channel(int(os.environ.get("SUGGESTION_APPROVED_CHANNEL_ID")))
+                await approved_channel.send(embed = sendEmbed)
                 
-                await channel.send(f'suggestion of {ctx.message.author}, with ID: {unique_id} has been approved by {user} who has these roles ({role_string}), this post will no longer be active')
                 return
-            if str(reaction.emoji) == "❌":
+
+            elif str(reaction.emoji) == "❌":
+                await message.delete()
                 remarks_embed = discord.Embed(colour=0x28da5b)
                 remarks_embed = discord.Embed(
                     title = 'Any remarks to be added? ',
@@ -206,7 +213,7 @@ async def suggestion(ctx):
                     msg = await bot.wait_for(
                         "message",
                         timeout=300.0,
-                        check=lambda message: message.author == ctx.author
+                        check=lambda message: message.author == user
                     )
                     if msg:
                         await remarks.delete()
@@ -216,18 +223,17 @@ async def suggestion(ctx):
                     await remarks.delete()
                     await channel.send('Cancelling due to timeout.', delete_after = 300.0)
                 
-                await ctx.send(f'🌸 Sorry! Your suggestion has not been Acknowledged by {user} who has these roles ({role_string}). We thank you for your valuable time!')
-                sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False)
+                sendEmbed.add_field(name='Disapproved by:  ', value = f'{user}', inline=False)
                 sendEmbed.add_field(name='Remarks: ',value = f'{remarksmessage}',inline=False) 
-                await ctx.send("Your Suggestion was: ")
-                message1 = await ctx.send(embed = sendEmbed)
+                disapproved_channel = bot.get_channel(int(os.environ.get("SUGGESTION_DISAPPROVED_CHANNEL_ID")))
+                await disapproved_channel.send(embed = sendEmbed)
                 
                 data = []
                 data.append(titlemessage)
                 data.append(descriptionmessage)
                 data.append(unique_id)
                 data.append("Rejected")
-                data.append(ctx.message.author)
+                data.append(ctx.member)
                 data.append(user)
                 data.append(remarksmessage)
                 
@@ -236,14 +242,15 @@ async def suggestion(ctx):
                     writer.writerow(data)
                 del data
                     
-                await channel.send(f'suggestion of {ctx.message.author}, with ID: {unique_id} has not been approved by {user} who has these roles ({role_string}), this post will no longer be active')
                 return
     except asyncio.TimeoutError:
-        await ctx.send("Your suggestion was timed out. Please try again!")
+        await bot.get_channel(ctx.channel_id).send("Your suggestion was timed out. Please try again!")
         return
 
 if __name__ == "__main__":
     try:
         bot.run(os.environ.get("TOKEN"))
+    except CommandNotFound:
+        pass # For handling command not found errors
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)

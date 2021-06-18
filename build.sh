@@ -18,6 +18,6 @@ run_cmd() {
 
 git_branch=$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | tr -d '\n' && echo  -n)
 run_cmd "docker build -t ${git_branch} ." "Docker file built."
-run_cmd "docker run -e TOKEN -e ADMIN_CHANNEL_ID ${git_branch}" "Run"
+run_cmd "docker run -e TOKEN -e ADMIN_CHANNEL_ID -e SUGGESTION_APPROVED_CHANNEL_ID -e SUGGESTION_DISAPPROVED_CHANNEL_ID -e REACION_MESSAGE_ID ${git_branch}" "Run"
 
 
