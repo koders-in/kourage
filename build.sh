@@ -49,4 +49,4 @@ git_branch=`git branch 2>/dev/null | grep '^*' | colrm 1 2 | tr -d '\n' && echo 
 
 run_cmd "docker volume create kourage_data"
 run_cmd "docker build -t ${git_branch} ." "Docker file built."
-run_cmd "docker run -e TOKEN ${git_branch}" "Run"
+run_cmd "docker run -v kourage_data:/usr/src/app/db -e TOKEN ${git_branch}" "Run"
