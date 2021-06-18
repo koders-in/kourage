@@ -1,4 +1,5 @@
 import discord
+import os
 import platform
 import logging
 import time
@@ -11,7 +12,6 @@ machine = platform.node()
 init()
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
-import config as CONFIG  # Capitals for global
 
 class Logger:
     def __init__(self, app):
@@ -40,10 +40,10 @@ bot = commands.Bot(command_prefix="~")
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
+    logger.warning("Kourage is running at version {0}".format("0.1.0"))
 
 if __name__ == "__main__":
     try:
-        bot.run(CONFIG.TOKEN)
+        bot.run(os.environ.get("TOKEN"))
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
