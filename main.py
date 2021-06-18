@@ -1,12 +1,9 @@
-# Manual file imports
 import asyncio
 import datetime
 import json
 import csv
 import os
 from uuid import uuid4
-
-# Logging format
 import logging
 import platform
 import time
@@ -25,7 +22,6 @@ init()
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
 
-
 class Logger:
     def __init__(self, app):
         self.app = app
@@ -42,8 +38,7 @@ class Logger:
     def color(self, message, color):
         print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', color))
 
-
-logger = Logger("kourage-boilerplate")
+logger = Logger("kourage-worklog")
 
 # FOR PRODUCTION
 bot = commands.Bot(command_prefix="~")
@@ -54,16 +49,10 @@ async def on_ready():  # Triggers when bot is ready
 
 # Suggestion command
 @bot.command()
-# @commands.has_any_role("Koders")
+@commands.has_any_role("everyone")
 async def suggestion(ctx):
     emojis = ['✅','❌'] 
-
-    
-    # channel = bot.get_channel(CONFIG.ADMIN_CHANNEL_ID)
-    channel = bot.get_channel(os.environ.get("ADMIN_CHANNEL_ID"))
-    
     await ctx.channel.purge(limit=1)
-    
     admin_embed = discord.Embed(colour=0x28da5b)
     admin_embed=discord.Embed(title="Suggestion Bot", description="To accept the suggestion: ✅"
                                                                     "To decline the suggestion: ❌", color=0x28da5b)
@@ -127,19 +116,12 @@ async def suggestion(ctx):
     admin_embed.add_field(name = 'Title', value  = f'{titlemessage}',inline = False)
     admin_embed.add_field(name = 'Description', value  = f'{descriptionmessage}',inline = False)
 
-    
-    # with open('suggestions.csv', 'w', encoding='UTF8', newline='') as f:
-    #     writer = csv.DictWriter(f, fieldnames = ['Title', 'Description', 'ID', 'Status','Suggested By','Acknowledged By','Remarks'] )
-    #     writer.writeheader()
-    #     f.close()
-    # make a csv called suggestions 
-    
+    channel = bot.get_channel(int(os.environ.get("ADMIN_CHANNEL_ID")))
     message = await channel.send(embed = admin_embed)
     await message.add_reaction('✅')
     await message.add_reaction('❌')
     
     sendEmbed = discord.Embed(colour = 0x28da5b)
-    # sendEmbed.add_field(name = 'New Suggestion!', value  = f'{suggestion}')
     sendEmbed.add_field(name = 'Title', value  = f'{titlemessage}')
     sendEmbed.add_field(name = 'Description', value  = f'{descriptionmessage}')
     sendEmbed.add_field(name='Ticket ID: ', value = f'{unique_id}', inline=False) 
@@ -152,8 +134,9 @@ async def suggestion(ctx):
         return not user.bot and message == reaction.message
     
     try:
-        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
-        # Role logic
+        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) 
+
+        # Role logic for displaying the maximum authority over roles
         role_string = ''
         for role in user.roles:
             if(role.name == '@everyone'):
@@ -190,9 +173,7 @@ async def suggestion(ctx):
                     await remarks.delete()
                     await channel.send('Cancelling due to timeout.', delete_after = 300.0)
                     
-                # CSV File logic
                 data = []
-
                 data.append(titlemessage)
                 data.append(descriptionmessage)
                 data.append(unique_id)
@@ -204,27 +185,22 @@ async def suggestion(ctx):
                 with open('suggestions.csv', 'a+', newline='') as f:
                     writer = csv.writer(f)
                     writer.writerow(data)
-
                 del data
                                     
-                await ctx.send(f'🙌🙌 Bravo!! Your suggestion has been Acknowledged by {user} who has these roles ({role_string}). We appreciate your efforts!')
+                await ctx.send(f'🙌🙌 Awesome!! Your suggestion has been Acknowledged by {user} who has these roles ({role_string}). We appreciate your efforts!')
                 sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False)
                 sendEmbed.add_field(name='Remarks: ',value = f'{remarksmessage}',inline=False)
-                
                 await ctx.send("Your Suggestion was: ")
                 message1 = await ctx.send(embed = sendEmbed)
                 
                 await channel.send(f'suggestion of {ctx.message.author}, with ID: {unique_id} has been approved by {user} who has these roles ({role_string}), this post will no longer be active')
                 return
             if str(reaction.emoji) == "❌":
-                
-                # Remarks Embed
                 remarks_embed = discord.Embed(colour=0x28da5b)
                 remarks_embed = discord.Embed(
                     title = 'Any remarks to be added? ',
                     description = ' This request will timeout after 5 minutes'
                 )
-                
                 remarks = await channel.send(embed = remarks_embed)
                 try:
                     msg = await bot.wait_for(
@@ -232,12 +208,10 @@ async def suggestion(ctx):
                         timeout=300.0,
                         check=lambda message: message.author == ctx.author
                     )
-                    
                     if msg:
                         await remarks.delete()
                         remarksmessage = msg.content
                         await msg.delete()
-                
                 except asyncio.TimeoutError:
                     await remarks.delete()
                     await channel.send('Cancelling due to timeout.', delete_after = 300.0)
@@ -248,9 +222,7 @@ async def suggestion(ctx):
                 await ctx.send("Your Suggestion was: ")
                 message1 = await ctx.send(embed = sendEmbed)
                 
-                # CSV Logic
                 data = []
-
                 data.append(titlemessage)
                 data.append(descriptionmessage)
                 data.append(unique_id)
@@ -261,9 +233,7 @@ async def suggestion(ctx):
                 
                 with open('suggestions.csv', 'a+', newline='') as f:
                     writer = csv.writer(f)
-                    # write the data
                     writer.writerow(data)
-
                 del data
                     
                 await channel.send(f'suggestion of {ctx.message.author}, with ID: {unique_id} has not been approved by {user} who has these roles ({role_string}), this post will no longer be active')
