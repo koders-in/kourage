@@ -10,7 +10,7 @@ from uuid import uuid4
 import logging
 import platform
 import time
-
+import os
 
 import discord
 import requests
@@ -24,7 +24,7 @@ machine = platform.node()
 init()
 
 logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
-import config as CONFIG  # Capitals for global
+
 
 class Logger:
     def __init__(self, app):
@@ -50,7 +50,7 @@ bot = commands.Bot(command_prefix="~")
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
-    logger.success("Kourage is running at version {0}".format(CONFIG.VERSION))
+    logger.success("Kourage is running at version {0}".format("0.1.0"))
 
 # Suggestion command
 @bot.command()
@@ -58,9 +58,9 @@ async def on_ready():  # Triggers when bot is ready
 async def suggestion(ctx):
     emojis = ['✅','❌'] 
 
-    # set ADMIN_CHANNEL_ID = 849583285645475850
+    
     # channel = bot.get_channel(CONFIG.ADMIN_CHANNEL_ID)
-    channel = bot.get_channel(CONFIG.ADMIN_CHANNEL_ID)
+    channel = bot.get_channel(os.environ.get("ADMIN_CHANNEL_ID"))
     
     await ctx.channel.purge(limit=1)
     
@@ -274,6 +274,6 @@ async def suggestion(ctx):
 
 if __name__ == "__main__":
     try:
-        bot.run('ODQ5NTY2Mzk1NjM3MTcwMTc2.YLdCXA.Jq-76rr3NpcSZcDfzGMfy13Bl2o')
+        bot.run(os.environ.get("TOKEN"))
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)

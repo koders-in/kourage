@@ -15,5 +15,9 @@ run_cmd() {
 	printf "${BOLD}[${SUCCESS}Success${NC}] ${SUCCESS}$2${NC}${NT}\n"
 }
 
-run_cmd "docker build -t kourage ." "Docker file built."
-run_cmd "docker run -e TOKEN -e OWN_TOKEN kourage" "Run"
+
+git_branch=$(git branch 2>/dev/null | grep '^*' | colrm 1 2 | tr -d '\n' && echo  -n)
+run_cmd "docker build -t ${git_branch} ." "Docker file built."
+run_cmd "docker run -e TOKEN -e ADMIN_CHANNEL_ID ${git_branch}" "Run"
+
+
