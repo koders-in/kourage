@@ -55,12 +55,12 @@ async def user(ctx):
     suggestEmbed1.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed1.timestamp = datetime.datetime.utcnow()
     
-    sent1 = await ctx.send(embed = suggestEmbed1)
+    sent1 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed1)
     try:
         msg = await bot.wait_for(
             "message",
             timeout=120.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
 
         if msg:
@@ -70,7 +70,7 @@ async def user(ctx):
 
     except asyncio.TimeoutError:
         await sent1.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 120)
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
 
     cursor = sqlite3.connect('main.sqlite')
     
@@ -83,12 +83,12 @@ async def user(ctx):
     suggestEmbed2.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed2.timestamp = datetime.datetime.utcnow()
     
-    sent2 = await ctx.send(embed = suggestEmbed2)
+    sent2 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed2)
     try:
         msg = await bot.wait_for(
             "message",
             timeout=300.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
 
         if msg:
@@ -98,7 +98,7 @@ async def user(ctx):
 
     except asyncio.TimeoutError:
         await sent2.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
 
     suggestEmbed3 = discord.Embed(
         colour = 0x28da5b,
@@ -109,13 +109,13 @@ async def user(ctx):
     suggestEmbed3.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed3.timestamp = datetime.datetime.utcnow()
 
-    sent3 = await ctx.send(embed = suggestEmbed3)
+    sent3 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed3)
 
     try:
         msg = await bot.wait_for(
             "message",
             timeout=300.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
 
         if msg:
@@ -125,7 +125,7 @@ async def user(ctx):
 
     except asyncio.TimeoutError:
         await sent3.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
         
     suggestEmbed4 = discord.Embed(
         colour = 0x28da5b,
@@ -136,12 +136,12 @@ async def user(ctx):
     suggestEmbed4.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed4.timestamp = datetime.datetime.utcnow()
     
-    sent4 = await ctx.send(embed = suggestEmbed4)
+    sent4 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed4)
     try:
         msg = await bot.wait_for(
             "message",
             timeout=300.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
 
         if msg:
@@ -151,7 +151,7 @@ async def user(ctx):
 
     except asyncio.TimeoutError:
         await sent4.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
         
     suggestEmbed5 = discord.Embed(
         colour = 0x28da5b,
@@ -163,7 +163,7 @@ async def user(ctx):
     suggestEmbed5.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed5.timestamp = datetime.datetime.utcnow()
 
-    message = await ctx.send(embed = suggestEmbed5)
+    message = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed5)
     await message.add_reaction('✅')
     await message.add_reaction('❌')
 
@@ -176,7 +176,7 @@ async def user(ctx):
     try:
         reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run        
         if str(reaction.emoji) == "✅":
-            await ctx.send('Thanks for letting us know your whatsapp number!')
+           # await ctx.send('Thanks for letting us know your whatsapp number!')
             suggestEmbed9 = discord.Embed(
                 colour = 0x28da5b,
                 title = 'Please tell me your WhatsApp Number.',
@@ -186,13 +186,13 @@ async def user(ctx):
             suggestEmbed9.set_footer(text="Made with ❤️️  by Koders")
             suggestEmbed9.timestamp = datetime.datetime.utcnow()
 
-            sent5 = await ctx.send(embed = suggestEmbed9)
+            sent5 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed9)
 
             try:
                 msg = await bot.wait_for(
                     "message",
                     timeout=300.0,
-                    check=lambda message: message.author == ctx.author
+                    check=lambda message: message.author == ctx.member
                 )
 
                 if msg:
@@ -202,14 +202,14 @@ async def user(ctx):
 
             except asyncio.TimeoutError:
                 await sent5.delete()
-                await ctx.send('Cancelling due to timeout.', delete_after = 300)
+                await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
         
         if str(reaction.emoji) == "❌":
            # await ctx.send('No!')
             message5 = None
                
     except asyncio.TimeoutError:
-        await ctx.send("Time out. Please try again!")
+        await bot.get_channel(ctx.channel_id).send("Time out. Please try again!")
       
     suggestEmbed6 = discord.Embed(
         colour = 0x28da5b,
@@ -220,7 +220,7 @@ async def user(ctx):
     suggestEmbed6.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed6.timestamp = datetime.datetime.utcnow()
     
-    message = await ctx.send(embed = suggestEmbed6)
+    message = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed6)
     await message.add_reaction('✅')
     await message.add_reaction('❌')
 
@@ -233,7 +233,7 @@ async def user(ctx):
     try:
         reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run        
         if str(reaction.emoji) == "✅":
-            await ctx.send('Thanks for letting us know your Facebook Id!')
+           # await ctx.send('Thanks for letting us know your Facebook Id!')
             suggestEmbed10 = discord.Embed(
                 colour = 0x28da5b,
                 title = 'Please tell me your Facebook Id.',
@@ -243,13 +243,13 @@ async def user(ctx):
             suggestEmbed10.set_footer(text="Made with ❤️️  by Koders")
             suggestEmbed10.timestamp = datetime.datetime.utcnow()
 
-            sent6 = await ctx.send(embed = suggestEmbed10)
+            sent6 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed10)
 
             try:
                 msg = await bot.wait_for(
                     "message",
                     timeout=300.0,
-                    check=lambda message: message.author == ctx.author
+                    check=lambda message: message.author == ctx.member
                 )
 
                 if msg:
@@ -259,14 +259,14 @@ async def user(ctx):
 
             except asyncio.TimeoutError:
                 await sent6.delete()
-                await ctx.send('Cancelling due to timeout.', delete_after = 300)
+                await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
         
         if str(reaction.emoji) == "❌":
            # await ctx.send('No!')
             message6 = None
                
     except asyncio.TimeoutError:
-        await ctx.send("Time out. Please try again!")
+        await bot.get_channel(ctx.channel_id).send("Time out. Please try again!")
 
     suggestEmbed7 = discord.Embed(
         colour = 0x28da5b,
@@ -277,7 +277,7 @@ async def user(ctx):
     suggestEmbed7.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed7.timestamp = datetime.datetime.utcnow()
     
-    message = await ctx.send(embed = suggestEmbed7)
+    message = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed7)
     await message.add_reaction('✅')
     await message.add_reaction('❌')
 
@@ -290,7 +290,7 @@ async def user(ctx):
     try:
         reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run        
         if str(reaction.emoji) == "✅":
-            await ctx.send('Thanks for letting us know your Instagram Id!')
+           # await ctx.send('Thanks for letting us know your Instagram Id!')
             suggestEmbed11 = discord.Embed(
                 colour = 0x28da5b,
                 title = 'Please tell me your Instagram Id.',
@@ -300,13 +300,13 @@ async def user(ctx):
             suggestEmbed11.set_footer(text="Made with ❤️️  by Koders")
             suggestEmbed11.timestamp = datetime.datetime.utcnow()
 
-            sent7 = await ctx.send(embed = suggestEmbed11)
+            sent7 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed11)
 
             try:
                 msg = await bot.wait_for(
                     "message",
                     timeout=300.0,
-                    check=lambda message: message.author == ctx.author
+                    check=lambda message: message.author == ctx.member
                 )
 
                 if msg:
@@ -316,14 +316,14 @@ async def user(ctx):
 
             except asyncio.TimeoutError:
                 await sent7.delete()
-                await ctx.send('Cancelling due to timeout.', delete_after = 300)
+                await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
         
         if str(reaction.emoji) == "❌":
            # await ctx.send('No!')
             message7 = None
                
     except asyncio.TimeoutError:
-        await ctx.send("Time out. Please try again!")
+        await bot.get_channel(ctx.channel_id).send("Time out. Please try again!")
 
     suggestEmbed8 = discord.Embed(
         colour = 0x28da5b,
@@ -334,12 +334,12 @@ async def user(ctx):
     suggestEmbed8.set_footer(text="Made with ❤️️  by Koders")
     suggestEmbed8.timestamp = datetime.datetime.utcnow()
     
-    sent8 = await ctx.send(embed = suggestEmbed8)
+    sent8 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed8)
     try:
         msg = await bot.wait_for(
             "message",
             timeout=300.0,
-            check=lambda message: message.author == ctx.author
+            check=lambda message: message.author == ctx.member
         )
 
         if msg:
@@ -352,8 +352,11 @@ async def user(ctx):
 
     except asyncio.TimeoutError:
         await sent8.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 300)
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300)
         
+    msg9 = ctx.member.id
+
+
     sendEmbed = discord.Embed(
         colour = 0x28da5b,
         title = 'User Profile',
@@ -373,12 +376,12 @@ async def user(ctx):
     sendEmbed.add_field(name='Redmine API Key', value = f'{message9}', inline=False)
 
     cursor.execute('''INSERT INTO main
-    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8)) 
+    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9)) 
 
     cursor.commit()
     #cursor.close()
 
-    await ctx.send(embed = sendEmbed)
+    await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
 
 
 # User Profile Info Command
@@ -798,6 +801,34 @@ async def on_ready():  # Triggers when bot is ready
     cursor.execute("ALTER TABLE main ADD Discord_Id TEXT")
 
     logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    emoji = payload.emoji
+    message_id = payload.message_id
+    
+    channel = bot.get_channel("CREATE_CHANNEL_ID")
+    sendEmbed = discord.Embed(
+        colour = 0x28da5b,
+        title = 'User Profile',
+        description = " All the information about the user profile like name, phone, mail and so on. "
+    )
+    
+    sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    sendEmbed.set_footer(text="Made with ❤️️  by Koders")
+    sendEmbed.timestamp = datetime.datetime.utcnow()
+
+    if str(payload.emoji) == '👍':
+        
+        message = await channel.send(embed = sendEmbed)
+       # await message.add_reaction('😋')
+       # await message.add_reaction('😉')
+       # await message.add_reaction('💪')
+       # await message.add_reaction('🔥')
+
+    if str(payload.emoji) in ('😋', '😉', '💪', '🔥'):
+
+        await user(payload)
 
 if __name__ == "__main__":
     try:
