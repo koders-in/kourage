@@ -1513,5 +1513,6 @@ async def on_raw_reaction_add(payload):
 if __name__ == "__main__":
     try:
         bot.run("TOKEN")
+
     except Exception as _e:
         logging.warning("Exception found at main worker. Reason: " + str(_e), exc_info=True)
