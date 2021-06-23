@@ -167,9 +167,6 @@ async def user(ctx):
     await message.add_reaction('✅')
     await message.add_reaction('❌')
 
-    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
-    unique_id = event_id[48:].upper()
-
     def check (reaction, user):
         return not user.bot and message == reaction.message
 
@@ -224,9 +221,6 @@ async def user(ctx):
     await message.add_reaction('✅')
     await message.add_reaction('❌')
 
-    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
-    unique_id = event_id[48:].upper()
-
     def check (reaction, user):
         return not user.bot and message == reaction.message
 
@@ -280,9 +274,6 @@ async def user(ctx):
     message = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed7)
     await message.add_reaction('✅')
     await message.add_reaction('❌')
-
-    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
-    unique_id = event_id[48:].upper()
 
     def check (reaction, user):
         return not user.bot and message == reaction.message
@@ -356,32 +347,708 @@ async def user(ctx):
         
     msg9 = ctx.member.id
 
+    suggestEmbed12 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your role at Koders',
+        description = " Write your role name at Koders like Developer, Design, Content and Marketing."
+    )
+    suggestEmbed12.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed12.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed12.timestamp = datetime.datetime.utcnow()
+    
+    sent12 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed12)
+    try:
+        msg = await bot.wait_for(
+            "message",
+            timeout=120.0,
+            check=lambda message: message.author == ctx.member
+        )
+
+        if msg:
+            await sent12.delete()
+            message10 = msg.content
+            await msg.delete()    
+
+    except asyncio.TimeoutError:
+        await sent12.delete()
+        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
 
     sendEmbed = discord.Embed(
         colour = 0x28da5b,
         title = 'User Profile',
         description = " All the information about the user profile like name, phone, mail and so on. "
     )
-    sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    sendEmbed.set_thumbnail(url=user.avatar_url)
     sendEmbed.set_footer(text="Made with ❤️️  by Koders")
     sendEmbed.timestamp = datetime.datetime.utcnow()
-    
+
+
     sendEmbed.add_field(name='Name', value = f'{message1}', inline=False)   
     sendEmbed.add_field(name='Phone Number', value = f'{message2}', inline=False) 
     sendEmbed.add_field(name='Mail Id', value = f'{message3}', inline=False)
     sendEmbed.add_field(name='Birthday', value = f'{message4}', inline=False)
-    sendEmbed.add_field(name = 'WhatsApp Number', value = f'{message5}', inline=False) 
+    sendEmbed.add_field(name='WhatsApp Number', value = f'{message5}', inline=False) 
     sendEmbed.add_field(name='Facebook Id', value = f'{message6}', inline=False)
     sendEmbed.add_field(name='Instagram Id', value = f'{message7}', inline=False)
     sendEmbed.add_field(name='Redmine API Key', value = f'{message9}', inline=False)
+    sendEmbed.add_field(name='Roles', value = f'{message10}', inline=False)
 
-    cursor.execute('''INSERT INTO main
-    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9)) 
 
-    cursor.commit()
-    #cursor.close()
+    # Developer role 
+    suggestEmbed13 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite Language ?',
+        description = " Write name of your favourite language like which use most eg: python, c++, etc."
+    )
+    suggestEmbed13.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed13.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed13.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed14 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite Text-editor/Ide ?',
+        description = " Write name of your favourite code-editor like which use most eg: vscode, atom, vim, etc."
+    )
+    suggestEmbed14.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed14.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed14.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed15 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your skills ?',
+        description = " Write your skills."
+    )
+    suggestEmbed15.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed15.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed15.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed16 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your previous projects ?',
+        description = " Write your about previous projects."
+    )
+    suggestEmbed16.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed16.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed16.timestamp = datetime.datetime.utcnow()
+
+
+    if message10 == "Developer":
+        sent13 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed13)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent13.delete()
+                message11 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent13.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent14 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed14)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent14.delete()
+                message12 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent14.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent15 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed15)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent15.delete()
+                message13 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent15.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent16 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed16)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent16.delete()
+                message14 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent16.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+
+        sendEmbed.add_field(name='Favourite Language', value = f'{message11}', inline=False)
+        sendEmbed.add_field(name='Favourite Text-editor/Ide', value = f'{message12}', inline=False)
+        sendEmbed.add_field(name='Skills', value = f'{message13}', inline=False)
+        sendEmbed.add_field(name='Previous projects', value = f'{message14}', inline=False)
+
+        cursor.execute('''INSERT INTO main
+        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Language, Ide, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message11, message12, message13, message14)) 
+
+        cursor.commit()
+        #cursor.close()
+
+    # Marketing role
+    suggestEmbed17 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Bio(Thoughts) ?',
+        description = " Write your bio or thoughts ."
+    )
+    suggestEmbed17.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed17.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed17.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed18 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your skills ?',
+        description = " Write your skills."
+    )
+    suggestEmbed18.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed18.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed18.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed19 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your previous projects ?',
+        description = " Write your about previous projects."
+    )
+    suggestEmbed19.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed19.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed19.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed20 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite tools ?',
+        description = " Write your about you favourite tools."
+    )
+    suggestEmbed20.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed20.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed20.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed21 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite brand name ?',
+        description = " Write name of your favourite brand."
+    )
+    suggestEmbed21.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed21.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed21.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed22 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Hobbies ?',
+        description = " Write about your Hobbies."
+    )
+    suggestEmbed22.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed22.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed22.timestamp = datetime.datetime.utcnow()
+
+
+    if message10 == "Marketing":
+        sent17 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed17)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent17.delete()
+                message15 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent17.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent18 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed18)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent18.delete()
+                message16 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent18.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent19 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed19)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent19.delete()
+                message17 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent19.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent20 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed20)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent20.delete()
+                message18 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent20.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent21 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed21)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent21.delete()
+                message19 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent21.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent22 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed22)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent22.delete()
+                message20 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent22.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+
+        sendEmbed.add_field(name='Bio (Thoughts)', value = f'{message15}', inline=False)
+        sendEmbed.add_field(name='Skills', value = f'{message16}', inline=False)
+        sendEmbed.add_field(name='Previous Projects', value = f'{message17}', inline=False)
+        sendEmbed.add_field(name='Favourite Tools', value = f'{message18}', inline=False)
+        sendEmbed.add_field(name='Favourite Brand', value = f'{message19}', inline=False)
+        sendEmbed.add_field(name='Hobbies', value = f'{message20}', inline=False)
+
+
+        cursor.execute('''INSERT INTO main
+        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Bio, Skills, Projects, Tools, Brand, Hobbies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message15, message16, message17, message18, message19, message20)) 
+
+        cursor.commit()
+
+
+    # Design role 
+    suggestEmbed23 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite tools ?',
+        description = " Write name of your favourite tools."
+    )
+    suggestEmbed23.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed23.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed23.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed24 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Portfolio link ?',
+        description = "Enter your portfolio link here."
+    )
+    suggestEmbed24.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed24.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed24.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed25 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your skills ?',
+        description = " Write your skills."
+    )
+    suggestEmbed25.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed25.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed25.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed26 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your previous projects ?',
+        description = " Write your about previous projects."
+    )
+    suggestEmbed26.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed26.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed26.timestamp = datetime.datetime.utcnow()
+
+
+    if message10 == "Design":
+        sent23 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed23)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent23.delete()
+                message21 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent23.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent24 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed24)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent24.delete()
+                message22 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent24.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent25 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed25)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent25.delete()
+                message23 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent25.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent26 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed26)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent26.delete()
+                message24 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent26.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+
+        sendEmbed.add_field(name='Favourite Tools', value = f'{message21}', inline=False)
+        sendEmbed.add_field(name='Portfolio', value = f'{message22}', inline=False)
+        sendEmbed.add_field(name='Skills', value = f'{message23}', inline=False)
+        sendEmbed.add_field(name='Previous projects', value = f'{message24}', inline=False)
+
+    
+        cursor.execute('''INSERT INTO main
+        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Tools, Portfolio, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message21, message22, message23, message24)) 
+
+        cursor.commit()
+        #cursor.close()
+
+
+    # Content role
+    suggestEmbed27 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Bio(Thoughts) ?',
+        description = " Write your bio or thoughts ."
+    )
+    suggestEmbed27.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed27.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed27.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed28 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your skills ?',
+        description = " Write your skills."
+    )
+    suggestEmbed28.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed28.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed28.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed29 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your previous projects ?',
+        description = " Write your about previous projects."
+    )
+    suggestEmbed29.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed29.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed29.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed30 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite tools ?',
+        description = " Write your about you favourite tools."
+    )
+    suggestEmbed30.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed30.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed30.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed31 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite blogs ?',
+        description = " Write your favourite blogs name."
+    )
+    suggestEmbed31.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed31.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed31.timestamp = datetime.datetime.utcnow()
+
+
+    suggestEmbed32 = discord.Embed(
+        colour = 0x28da5b,
+        title = 'Please tell me your Favourite books ?',
+        description = " Write about or name of your favourite books."
+    )
+    suggestEmbed32.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    suggestEmbed32.set_footer(text="Made with ❤️️  by Koders")
+    suggestEmbed32.timestamp = datetime.datetime.utcnow()
+
+
+    if message10 == "Content":
+        sent27 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed27)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent27.delete()
+                message25 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent27.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent28 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed18)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent28.delete()
+                message26 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent28.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent29 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed29)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent29.delete()
+                message27 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent29.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent30 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed30)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent30.delete()
+                message28 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent30.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent31 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed31)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent31.delete()
+                message29 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent31.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+        sent32 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed32)
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=120.0,
+                check=lambda message: message.author == ctx.member
+            )
+
+            if msg:
+                await sent32.delete()
+                message30 = msg.content
+                await msg.delete()    
+
+        except asyncio.TimeoutError:
+            await sent32.delete()
+            await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
+
+
+        sendEmbed.add_field(name='Bio (Thoughts)', value = f'{message25}', inline=False)
+        sendEmbed.add_field(name='Skills', value = f'{message26}', inline=False)
+        sendEmbed.add_field(name='Previous Projects', value = f'{message27}', inline=False)
+        sendEmbed.add_field(name='Favourite Tools', value = f'{message28}', inline=False)
+        sendEmbed.add_field(name='Favourite Blogs', value = f'{message29}', inline=False)
+        sendEmbed.add_field(name='Favourite Books', value = f'{message30}', inline=False)
+ 
+
+        cursor.execute('''INSERT INTO main
+        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Bio, Skills, Projects, Tools, Blogs, Books) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message25, message26, message27, message28, message29, message30)) 
+
+        cursor.commit()
+
 
     await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+
+    # Admin Channel Id
+    channel = bot.get_channel("")
+
+    message = await channel.send(embed = sendEmbed)
+    await message.add_reaction('✅')
+    await message.add_reaction('❌')
+
+    from uuid import uuid4
+
+    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+    unique_id = event_id[48:].upper()
+
+
+    def check (reaction, user):
+        return not user.bot and message == reaction.message
+    
+    try:
+        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
+        # Role logic
+        role_string = ''
+        for role in user.roles:
+            if(role.name == '@everyone'):
+                continue
+            else:
+                role_string += role.name
+                role_string += ','
+        role_string = role_string[:-1]
+        
+        while reaction.message == message:
+            if str(reaction.emoji) == "✅":                
+                await bot.get_channel(ctx.channel_id).send('Created User profile has been approved!')
+                #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+                
+                await channel.send('Created User profile has been approved!')
+                return
+            if str(reaction.emoji) == "❌":
+                await bot.get_channel(ctx.channel_id).send('Created User profile has not been approved!. We thank you for your valuable time!')
+                #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+                    
+                await channel.send('Created User profile has not been approved!')
+                return
+    except asyncio.TimeoutError:
+        await bot.get_channel(ctx.channel_id).send("Timeout for creating user profile. Please try again!")
+        return
 
 
 # User Profile Info Command
@@ -799,6 +1466,18 @@ async def on_ready():  # Triggers when bot is ready
         )
     ''')
     cursor.execute("ALTER TABLE main ADD Discord_Id TEXT")
+    cursor.execute("ALTER TABLE main ADD Roles TEXT")
+    cursor.execute("ALTER TABLE main ADD Tools TEXT")
+    cursor.execute("ALTER TABLE main ADD Skills TEXT")
+    cursor.execute("ALTER TABLE main ADD Projects TEXT")
+    cursor.execute("ALTER TABLE main ADD Portfolio TEXT")
+    cursor.execute("ALTER TABLE main ADD Brand TEXT")
+    cursor.execute("ALTER TABLE main ADD Bio TEXT")
+    cursor.execute("ALTER TABLE main ADD Hobbies TEXT")
+    cursor.execute("ALTER TABLE main ADD Blogs TEXT")
+    cursor.execute("ALTER TABLE main ADD Books TEXT")
+    cursor.execute("ALTER TABLE main ADD Language TEXT")
+    cursor.execute("ALTER TABLE main ADD Ide TEXT")
 
     logger.warning("Kourage is running at version {0}".format(CONFIG.VERSION))
 
@@ -807,6 +1486,7 @@ async def on_raw_reaction_add(payload):
     emoji = payload.emoji
     message_id = payload.message_id
     
+    # Create Profile Channel Id
     channel = bot.get_channel("CREATE_CHANNEL_ID")
     sendEmbed = discord.Embed(
         colour = 0x28da5b,
