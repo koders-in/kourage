@@ -57,6 +57,20 @@ def show_members(key, project_id):
         result += "\n"
     return result
 
+def show_issues(key): # Redmine api key
+    url = "https://kore.koders.in/issues.json"
+    payload={}
+    headers = {
+      'X-Redmine-API-Key': key
+    }
+    response = requests.request("GET", url, headers=headers, data=payload)
+    data = json.loads(response.text)
+    result = ""
+    for issue in data['issues']:
+        result += str(issue['id']) + " - " + issue['subject']+ " - "  + issue['project']['name']
+        result += "\n"
+    return result
+
 def change_issue_status(key, issue_id, status_id):
     url = "https://kore.koders.in/issues/" + str(issue_id) + ".json"
     payload={'issue[status_id]': status_id }
@@ -69,4 +83,8 @@ def change_issue_status(key, issue_id, status_id):
             return True
         else:
             return False
+    except:
+        print("Something went wrong")
+        return False
 
+print(show_issues(os.environ.get("REDMINE_KEY")))
