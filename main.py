@@ -48,8 +48,8 @@ bot = commands.Bot(command_prefix="~")
 async def user(ctx):
     suggestEmbed1 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Name',
-        description = " Write your full name ."
+        title = 'What’s your good name?',
+        description = " Write your full name."
     )
     suggestEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed1.set_footer(text="Made with ❤️️  by Koders")
@@ -76,8 +76,8 @@ async def user(ctx):
     
     suggestEmbed2 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Phone Number',
-        description = """ Write your phone number. """
+        title = 'What is your contact number?',
+        description = "Enter the number on which you can be contacted at any hour of the day. "
         )
     suggestEmbed2.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed2.set_footer(text="Made with ❤️️  by Koders")
@@ -102,8 +102,8 @@ async def user(ctx):
 
     suggestEmbed3 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Mail Id',
-        description = """ Write your email id. """
+        title = 'Do you want to enter your official email id?',
+        description = " Make sure it’s free of typos. "
     )
     suggestEmbed3.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed3.set_footer(text="Made with ❤️️  by Koders")
@@ -129,8 +129,8 @@ async def user(ctx):
         
     suggestEmbed4 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Birthday',
-        description = " Write your birthday date in dd/mm/yyyy in this format. "
+        title = 'When is your birthday?',
+        description = "Enter birth date in DD/MM/YY format."
     )
     suggestEmbed4.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed4.set_footer(text="Made with ❤️️  by Koders")
@@ -155,8 +155,10 @@ async def user(ctx):
         
     suggestEmbed5 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Could you please tell me your WhatsApp Number ?',
-        description = " Select your response with green tick for yes and red cross if not willing to share. "
+        title = 'Can you share your Whatsapp number?',
+        description = '''
+        If, Yes- ✔️
+        Else, No- ❌ '''
     )
     suggestEmbed5.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     
@@ -176,8 +178,8 @@ async def user(ctx):
            # await ctx.send('Thanks for letting us know your whatsapp number!')
             suggestEmbed9 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your WhatsApp Number.',
-                description = " Write you phone number. "
+                title = 'What is your Whatsapp number?',
+                description = "Please enter your current whatsapp number."
                 )
             suggestEmbed9.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed9.set_footer(text="Made with ❤️️  by Koders")
@@ -210,8 +212,11 @@ async def user(ctx):
       
     suggestEmbed6 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Could you please tell me your Facebook Id ?',
-        description = " Select your response with green tick for yes and red cross if not willing to share. "
+        title = 'Can you share your Facebook id?',
+        description = '''
+        If, Yes- ✔️ 
+        Else, No- ❌
+        '''
     )
     suggestEmbed6.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed6.set_footer(text="Made with ❤️️  by Koders")
@@ -230,8 +235,8 @@ async def user(ctx):
            # await ctx.send('Thanks for letting us know your Facebook Id!')
             suggestEmbed10 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your Facebook Id.',
-                description = " Write you Facebook Id. "
+                title = 'What is your Facebook id?',
+                description = "Please enter your Facebook id. Url accepted."
                 )
             suggestEmbed10.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed10.set_footer(text="Made with ❤️️  by Koders")
@@ -264,8 +269,11 @@ async def user(ctx):
 
     suggestEmbed7 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Could you please tell me your Instagram Id username ?',
-        description = " Select your response with green tick for yes and red cross if not willing to share. "
+        title = 'Do you want to share your Instagram username?',
+        description = '''
+        If you want to share: Yes- ✔️ 
+        If you don’t want to share: No- ❌
+        '''
     )
     suggestEmbed7.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed7.set_footer(text="Made with ❤️️  by Koders")
@@ -284,8 +292,8 @@ async def user(ctx):
            # await ctx.send('Thanks for letting us know your Instagram Id!')
             suggestEmbed11 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your Instagram Id.',
-                description = " Write you Instagram Id. "
+                title = 'What is your Instagram username?',
+                description = "Please enter your Instagram username."
                 )
             suggestEmbed11.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed11.set_footer(text="Made with ❤️️  by Koders")
@@ -318,8 +326,8 @@ async def user(ctx):
 
     suggestEmbed8 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Redmine API Key',
-        description = " Write your Redmine API Key. "
+        title = 'Enter your Redmine API Key',
+        description = "Make sure it’s valid and free of typos."
     )
     suggestEmbed8.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed8.set_footer(text="Made with ❤️️  by Koders")
@@ -349,8 +357,9 @@ async def user(ctx):
 
     suggestEmbed12 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your role at Koders',
-        description = " Write your role name at Koders like Developer, Design, Content and Marketing."
+        title = 'What is your role at Koders?',
+        description = '''Enter your role as a Koder. 
+        (Design, Developer, Content, Marketing)'''
     )
     suggestEmbed12.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed12.set_footer(text="Made with ❤️️  by Koders")
@@ -377,29 +386,33 @@ async def user(ctx):
     sendEmbed = discord.Embed(
         colour = 0x28da5b,
         title = 'User Profile',
-        description = " All the information about the user profile like name, phone, mail and so on. "
+        description = '''All the user related information i.e.,
+        -Name
+        -Mobile number
+        -Email id ,etc.
+        '''
     )
     sendEmbed.set_thumbnail(url=user.avatar_url)
     sendEmbed.set_footer(text="Made with ❤️️  by Koders")
     sendEmbed.timestamp = datetime.datetime.utcnow()
 
 
-    sendEmbed.add_field(name='Name', value = f'{message1}', inline=False)   
-    sendEmbed.add_field(name='Phone Number', value = f'{message2}', inline=False) 
-    sendEmbed.add_field(name='Mail Id', value = f'{message3}', inline=False)
-    sendEmbed.add_field(name='Birthday', value = f'{message4}', inline=False)
-    sendEmbed.add_field(name='WhatsApp Number', value = f'{message5}', inline=False) 
-    sendEmbed.add_field(name='Facebook Id', value = f'{message6}', inline=False)
-    sendEmbed.add_field(name='Instagram Id', value = f'{message7}', inline=False)
+    sendEmbed.add_field(name='Name', value = f'{message1}', inline=True)
+    sendEmbed.add_field(name='Roles', value = f'{message10}', inline=True)   
+    sendEmbed.add_field(name='Phone Number', value = f'{message2}', inline=True) 
+    sendEmbed.add_field(name='Mail Id', value = f'{message3}', inline=True)
+    sendEmbed.add_field(name='Birthday', value = f'{message4}', inline=True)
+    sendEmbed.add_field(name='WhatsApp Number', value = f'{message5}', inline=True) 
+    sendEmbed.add_field(name='Facebook Id', value = f'{message6}', inline=True)
+    sendEmbed.add_field(name='Instagram Id', value = f'{message7}', inline=True)
     sendEmbed.add_field(name='Redmine API Key', value = f'{message9}', inline=False)
-    sendEmbed.add_field(name='Roles', value = f'{message10}', inline=False)
-
+    
 
     # Developer role 
     suggestEmbed13 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite Language ?',
-        description = " Write name of your favourite language like which use most eg: python, c++, etc."
+        title = 'What is your preferred Koding language?',
+        description = "Write down the name of your favorite Koding language. E.g. C/C++/Java/Python,etc."
     )
     suggestEmbed13.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed13.set_footer(text="Made with ❤️️  by Koders")
@@ -408,8 +421,11 @@ async def user(ctx):
 
     suggestEmbed14 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite Text-editor/Ide ?',
-        description = " Write name of your favourite code-editor like which use most eg: vscode, atom, vim, etc."
+        title = 'Which is your favorite Text-editor/ IDE?',
+        description = '''
+        Note down your favorite code-editor of all time.
+        E.g. Vscode, vim, eclipse, Notepad++,etc.
+        '''
     )
     suggestEmbed14.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed14.set_footer(text="Made with ❤️️  by Koders")
@@ -418,8 +434,8 @@ async def user(ctx):
 
     suggestEmbed15 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your skills ?',
-        description = " Write your skills."
+        title = 'What are your skills as a developer?',
+        description = "Make a list of your skills."
     )
     suggestEmbed15.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed15.set_footer(text="Made with ❤️️  by Koders")
@@ -428,8 +444,8 @@ async def user(ctx):
 
     suggestEmbed16 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your previous projects ?',
-        description = " Write your about previous projects."
+        title = 'What are some of the projects you’ve worked on?',
+        description = "Write down about the projects that you’ve made."
     )
     suggestEmbed16.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed16.set_footer(text="Made with ❤️️  by Koders")
@@ -506,8 +522,8 @@ async def user(ctx):
             await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
 
 
-        sendEmbed.add_field(name='Favourite Language', value = f'{message11}', inline=False)
-        sendEmbed.add_field(name='Favourite Text-editor/Ide', value = f'{message12}', inline=False)
+        sendEmbed.add_field(name='Favourite Language', value = f'{message11}', inline=True)
+        sendEmbed.add_field(name='Favourite Text-editor/Ide', value = f'{message12}', inline=True)
         sendEmbed.add_field(name='Skills', value = f'{message13}', inline=False)
         sendEmbed.add_field(name='Previous projects', value = f'{message14}', inline=False)
 
@@ -515,13 +531,13 @@ async def user(ctx):
         (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Language, Ide, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message11, message12, message13, message14)) 
 
         cursor.commit()
-        #cursor.close()
+
 
     # Marketing role
     suggestEmbed17 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Bio(Thoughts) ?',
-        description = " Write your bio or thoughts ."
+        title = 'Give a brief description of yourself.',
+        description = "Express your thoughts(quotes) for your bio."
     )
     suggestEmbed17.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed17.set_footer(text="Made with ❤️️  by Koders")
@@ -530,8 +546,8 @@ async def user(ctx):
 
     suggestEmbed18 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your skills ?',
-        description = " Write your skills."
+        title = 'What are your skills as a Marketing team member?',
+        description = "Make a list of your skills."
     )
     suggestEmbed18.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed18.set_footer(text="Made with ❤️️  by Koders")
@@ -540,8 +556,8 @@ async def user(ctx):
 
     suggestEmbed19 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your previous projects ?',
-        description = " Write your about previous projects."
+        title = 'What are some of the projects you’ve worked on?',
+        description = "Write down about the projects that you’ve made."
     )
     suggestEmbed19.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed19.set_footer(text="Made with ❤️️  by Koders")
@@ -550,8 +566,8 @@ async def user(ctx):
 
     suggestEmbed20 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite tools ?',
-        description = " Write your about you favourite tools."
+        title = 'Which tools do you use the most?',
+        description = "Tools concerning your role in the Marketing team."
     )
     suggestEmbed20.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed20.set_footer(text="Made with ❤️️  by Koders")
@@ -560,8 +576,8 @@ async def user(ctx):
 
     suggestEmbed21 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite brand name ?',
-        description = " Write name of your favourite brand."
+        title = 'Which brand is your favorite?',
+        description = "Make a note of the name of the brand that most appeals to you."
     )
     suggestEmbed21.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed21.set_footer(text="Made with ❤️️  by Koders")
@@ -570,8 +586,8 @@ async def user(ctx):
 
     suggestEmbed22 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Hobbies ?',
-        description = " Write about your Hobbies."
+        title = 'What are your hobbies?',
+        description = "Make a list of your hobbies."
     )
     suggestEmbed22.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed22.set_footer(text="Made with ❤️️  by Koders")
@@ -699,8 +715,8 @@ async def user(ctx):
     # Design role 
     suggestEmbed23 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite tools ?',
-        description = " Write name of your favourite tools."
+        title = 'What are your favorite tools as a Designer?',
+        description = "Make a list of your favorite tools. E.g. Adobe Photoshop,etc."
     )
     suggestEmbed23.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed23.set_footer(text="Made with ❤️️  by Koders")
@@ -709,8 +725,8 @@ async def user(ctx):
 
     suggestEmbed24 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Portfolio link ?',
-        description = "Enter your portfolio link here."
+        title = 'Please share your portfolio.',
+        description = "We would like to have a look at your portfolio."
     )
     suggestEmbed24.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed24.set_footer(text="Made with ❤️️  by Koders")
@@ -719,8 +735,8 @@ async def user(ctx):
 
     suggestEmbed25 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your skills ?',
-        description = " Write your skills."
+        title = 'What are your skills as a designer?',
+        description = "Make a list of your skills."
     )
     suggestEmbed25.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed25.set_footer(text="Made with ❤️️  by Koders")
@@ -729,8 +745,8 @@ async def user(ctx):
 
     suggestEmbed26 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your previous projects ?',
-        description = " Write your about previous projects."
+        title = 'What are some of the projects you’ve worked on?',
+        description = "Write down about the projects that you’ve made."
     )
     suggestEmbed26.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed26.set_footer(text="Made with ❤️️  by Koders")
@@ -808,7 +824,7 @@ async def user(ctx):
 
 
         sendEmbed.add_field(name='Favourite Tools', value = f'{message21}', inline=False)
-        sendEmbed.add_field(name='Portfolio', value = f'{message22}', inline=False)
+        sendEmbed.add_field(name='Portfolio', value = f'{message22}', inline=True)
         sendEmbed.add_field(name='Skills', value = f'{message23}', inline=False)
         sendEmbed.add_field(name='Previous projects', value = f'{message24}', inline=False)
 
@@ -817,14 +833,13 @@ async def user(ctx):
         (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Tools, Portfolio, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message21, message22, message23, message24)) 
 
         cursor.commit()
-        #cursor.close()
 
 
     # Content role
     suggestEmbed27 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Bio(Thoughts) ?',
-        description = " Write your bio or thoughts ."
+        title = 'Give a brief description of yourself.',
+        description = "Express your thoughts(quotes) for your bio."
     )
     suggestEmbed27.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed27.set_footer(text="Made with ❤️️  by Koders")
@@ -833,8 +848,8 @@ async def user(ctx):
 
     suggestEmbed28 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your skills ?',
-        description = " Write your skills."
+        title = 'What are your skills as a Content team member?',
+        description = "Make a list of your skills."
     )
     suggestEmbed28.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed28.set_footer(text="Made with ❤️️  by Koders")
@@ -843,8 +858,8 @@ async def user(ctx):
 
     suggestEmbed29 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your previous projects ?',
-        description = " Write your about previous projects."
+        title = 'What are some of the projects you’ve worked on?',
+        description = "Write down about the projects that you’ve made."
     )
     suggestEmbed29.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed29.set_footer(text="Made with ❤️️  by Koders")
@@ -853,8 +868,8 @@ async def user(ctx):
 
     suggestEmbed30 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite tools ?',
-        description = " Write your about you favourite tools."
+        title = 'Which tools do you use the most?',
+        description = "Tools concerning your role in the Content team"
     )
     suggestEmbed30.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed30.set_footer(text="Made with ❤️️  by Koders")
@@ -863,8 +878,8 @@ async def user(ctx):
 
     suggestEmbed31 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite blogs ?',
-        description = " Write your favourite blogs name."
+        title = 'What are your favourite blogs that you frequently read?',
+        description = "Make a note of your favorite blogs."
     )
     suggestEmbed31.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed31.set_footer(text="Made with ❤️️  by Koders")
@@ -873,8 +888,8 @@ async def user(ctx):
 
     suggestEmbed32 = discord.Embed(
         colour = 0x28da5b,
-        title = 'Please tell me your Favourite books ?',
-        description = " Write about or name of your favourite books."
+        title = 'What are some of your favorite books?',
+        description = "Make a list of your favorite books."
     )
     suggestEmbed32.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     suggestEmbed32.set_footer(text="Made with ❤️️  by Koders")
@@ -1052,61 +1067,73 @@ async def user(ctx):
 
 
 # User Profile Info Command
-@bot.command() 
-async def profile(ctx, *, username: discord.Member):
+@bot.command()
+async def profile(ctx, *,username):
 
-    await ctx.message.mentions[0].id
-    # print(username)
+   # if message.mentions:
+   # usernname = ctx.message.mentions[0].id
 
     conn = sqlite3.connect('main.sqlite')
 
+    cur = conn.cursor()
+    cur.execute('''SELECT Discord_Id FROM main WHERE Name = ?''', (username, ))
+
+    rows = cur.fetchone()
+    avatar_url = (await ctx.guild.fetch_member(int(rows[0]))).avatar_url if rows != None else "https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447"
+
     sendEmbed = discord.Embed(
-        colour = 0x28da5b,
-        title = 'User Profile',
-        description = " All the information about the user profile like name, phone, mail and so on. "
-        )
-    sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+        colour=0x28da5b,
+        title='User Profile',
+        description=''' All the user related information i.e.,
+        -Name
+        -Mobile number
+        -Email id ,etc. '''
+    )
+    sendEmbed.set_thumbnail(url=avatar_url)
     sendEmbed.set_footer(text="Made with ❤️️  by Koders")
     sendEmbed.timestamp = datetime.datetime.utcnow()
 
-    sendEmbed1 = discord.Embed(
-        colour = 0x28da5b,
-        title = 'User Profile Not Found',
-        description = " This user profile doesn't exists in the database. "
-        )
-    sendEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-    sendEmbed1.set_footer(text="Made with ❤️️  by Koders")
-    sendEmbed1.timestamp = datetime.datetime.utcnow()
+    cur.execute('''SELECT Name, Roles, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Tools, Skills, Projects, Portfolio, Brand, Bio, Hobbies, Blogs, Books, Language, Ide FROM main WHERE Name = ?''', (username, ))
 
-    cur = conn.cursor()
-    cur.execute('''SELECT Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine FROM main WHERE Discord_Id = ?''', (username.id, ))
+    rows = cur.fetchone()
 
-    rows = cur.fetchall()
+    field_name = ['Name', 'Role', 'Phone Number', 'Mail Id', 'Birthday', 'WhatsApp Number', 'Facebook Id', 'Instagram Id', 'Redmine API Key','Favourite Tools', 'Skills', 'Previous Projects', 'Portfolio', 'Favourite Brand', 'Bio (Thoughts)', 'Favourite Hobbies', 'Favourite Blogs', 'Favourite Books', 'Favourite Language', 'Favourite Text-editor/Ide']
 
-    if rows is "":
+    if rows != None:
+        for i in range(len(field_name)):
+            if rows[i] != None:
+                if i == 8:
+                    # Decoding API Key
+                    message = base64.b64decode(rows[8]).decode()
+                    new = message[:-3] + '***'
 
-        await ctx.send(embed = sendEmbed1)
+                    sendEmbed.add_field(name=field_name[8], value=new, inline=False)
+
+                elif (i == 9) or (i == 10) or (i == 11) or (i == 14) or (i == 15) or (i == 15) or (i == 16) or (i == 17):
+
+                    sendEmbed.add_field(name=field_name[i], value=rows[i], inline=False)
+
+                else:
+                    sendEmbed.add_field(name=field_name[i], value=rows[i], inline=True)
+
+        await ctx.send(embed=sendEmbed)
 
     else:
+        sendEmbed1 = discord.Embed(
+            colour=0x28da5b,
+            title='User Profile Not Found',
+            description=" Sorry! This user profile does not exist in the database. "
+        )
+        sendEmbed1.set_thumbnail(url=avatar_url)
+        sendEmbed1.set_footer(text="Made with ❤️️  by Koders")
+        sendEmbed1.timestamp = datetime.datetime.utcnow()
 
-        for row in rows:
-            # Decoding the Api Key 
-            message = base64.b64decode(row[7]).decode()
-            new = message[:-3] + '***'
+        await ctx.send(embed=sendEmbed1)
 
-            sendEmbed.add_field(name='Name', value = row[0], inline=False)   
-            sendEmbed.add_field(name='Phone Number', value = row[1], inline=False) 
-            sendEmbed.add_field(name='Mail Id', value = row[2], inline=False)
-            sendEmbed.add_field(name='Birthday', value = row[3], inline=False)
-            sendEmbed.add_field(name='WhatsApp Number', value = row[4], inline=False) 
-            sendEmbed.add_field(name='Facebook Id', value = row[5], inline=False)
-            sendEmbed.add_field(name='Instagram Id', value = row[6], inline=False)
-            sendEmbed.add_field(name='Redmine API Key', value = new, inline=False)
+    await ctx.message.delete()
 
-            await ctx.send(embed = sendEmbed)
-    
     cur.close()
-    
+
 
 # Update Profile Command
 @bot.command()
@@ -1121,13 +1148,17 @@ async def update(ctx, username: discord.Member):
     embed = discord.Embed(
             colour = 0x28da5b,
             title = 'User Profile',
-            description = " All the information about the user profile like name, phone, mail and so on. "
+            description = '''All the user related information i.e.,
+            -Name
+            -Mobile number
+            -Email id ,etc.
+            '''
             )
     embed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
     embed.set_footer(text="Made with ❤️️  by Koders")
     embed.timestamp = datetime.datetime.utcnow()
     
-    embed.add_field(name="Which user profile feature you want to update ?", value=f'''
+    embed.add_field(name="Which user profile feature would you like to update?", value=f'''
      :one: {'Name'}
 
      :two: {'Phone Number'}
@@ -1167,8 +1198,8 @@ async def update(ctx, username: discord.Member):
             await ctx.send('Thanks for updating your Name!')
             suggestEmbed01 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated Name.',
-                description = " Write your updated name. "
+                title = 'To update your name, enter it here.',
+                description = " Enter your updated name."
                 )
             suggestEmbed01.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed01.set_footer(text="Made with ❤️️  by Koders")
@@ -1202,8 +1233,8 @@ async def update(ctx, username: discord.Member):
             await ctx.send('Thanks for updating your Phone Number!')
             suggestEmbed02 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated phone number.',
-                description = " Write your updated phone number. "
+                title = 'Kindly enter your contact number.',
+                description = "Enter your new contact number here."
                 )
             suggestEmbed02.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed02.set_footer(text="Made with ❤️️  by Koders")
@@ -1237,8 +1268,8 @@ async def update(ctx, username: discord.Member):
             await ctx.send('Thanks for updating your Mail Id!')
             suggestEmbed03 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated Mail Id.',
-                description = " Write your updated Mail Id. "
+                title = 'Enter your new email id to be updated.',
+                description = "Enter your up-to-date email id."
                 )
             suggestEmbed03.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed03.set_footer(text="Made with ❤️️  by Koders")
@@ -1272,8 +1303,8 @@ async def update(ctx, username: discord.Member):
             await ctx.send('Thanks for updating your Birthday date!')
             suggestEmbed04 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated birthday date.',
-                description = " Write your updated birthday date. "
+                title = 'To update your birth date, enter here.',
+                description = "Write your updated birth date in DD/MM/YY."
                 )
             suggestEmbed04.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed04.set_footer(text="Made with ❤️️  by Koders")
@@ -1304,11 +1335,11 @@ async def update(ctx, username: discord.Member):
             conn.commit()
 
         if str(reaction.emoji) == "5️⃣":
-            await ctx.send('Thanks for updating your Name!')
+            await ctx.send('Thanks for updating your WhatsApp Number!')
             suggestEmbed05 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated Name.',
-                description = " Write your updated name. "
+                title = 'Kindly update your current WhatsApp Number.',
+                description = "Please enter your current WhatsApp Number."
                 )
             suggestEmbed05.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed05.set_footer(text="Made with ❤️️  by Koders")
@@ -1339,11 +1370,11 @@ async def update(ctx, username: discord.Member):
             conn.commit()
 
         if str(reaction.emoji) == "6️⃣":
-            await ctx.send('Thanks for updating your Name!')
+            await ctx.send('Thanks for updating your Facebook Id!')
             suggestEmbed06 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated Name.',
-                description = " Write your updated name. "
+                title = 'Update your Facebook Id.',
+                description = "Please enter your Facebook Id."
                 )
             suggestEmbed06.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed06.set_footer(text="Made with ❤️️  by Koders")
@@ -1374,11 +1405,11 @@ async def update(ctx, username: discord.Member):
             conn.commit()
 
         if str(reaction.emoji) == "7️⃣":
-            await ctx.send('Thanks for updating your Name!')
+            await ctx.send('Thanks for updating your Instagram username!')
             suggestEmbed07 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated Name.',
-                description = " Write your updated name. "
+                title = 'Update your Instagram username.',
+                description = "Please enter your Instagram username."
                 )
             suggestEmbed07.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed07.set_footer(text="Made with ❤️️  by Koders")
@@ -1409,11 +1440,11 @@ async def update(ctx, username: discord.Member):
             conn.commit()
 
         if str(reaction.emoji) == "8️⃣":
-            await ctx.send('Thanks for updating your Name!')
+            await ctx.send('Thanks for updating your Redmine API Key!')
             suggestEmbed08 = discord.Embed(
                 colour = 0x28da5b,
-                title = 'Please tell me your updated Name.',
-                description = " Write your updated name. "
+                title = 'Update your Redmine API key.',
+                description = "Kindly enter your valid Redmine API key."
                 )
             suggestEmbed08.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
             suggestEmbed08.set_footer(text="Made with ❤️️  by Koders")
@@ -1490,8 +1521,13 @@ async def on_raw_reaction_add(payload):
     channel = bot.get_channel("CREATE_CHANNEL_ID")
     sendEmbed = discord.Embed(
         colour = 0x28da5b,
-        title = 'User Profile',
-        description = " All the information about the user profile like name, phone, mail and so on. "
+        title = 'Create User Profile',
+        description = '''To create your profile and include interesting information about yourself, follow these steps:
+
+        - Come on! Include some interesting facts about yourself.Information should be specific, genuine and not some random stuff.
+        - Maintain it as a repository for your professional information.It will be similar to a resume walkthrough.
+        - Avoid using slang, abbreviations or idiomatic expressions.
+        '''
     )
     
     sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
