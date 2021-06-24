@@ -57,40 +57,16 @@ def show_members(key, project_id):
         result += "\n"
     return result
 
-#key = os.environ.get('REDMINE_KEY')
-#
-## SHOW PROJECTS
-#show_projects(key)
-#
-#project_id = input("Enter project id:")
-## SHOW TRACKER ID
-#print("""
-#Tracker ID:
-#1 - Bug
-#2 - Feature
-#3 - Support
-#4 - Task
-#""")
-#tracker_id = input("Enter tracker id:")
-## SHOW PRIORITY ID
-#print("""
-#Priority ID
-#1 - Low
-#2 - Normal
-#3 - High
-#4 - Urgent
-#5 - Immediate
-#""")
-#priority_id = input("Enter priority id:")
-## SHOW SUBJECT
-#subject = input("Enter subject:")
-## SHOW DESCRIPTION
-#description = input("Enter description:")
-## SHOW DUE DATE
-#due_date = input("Enter due date[YYYY-MM-DD]:")
-## SHOW ESTIMATED HOURS
-#estimated_hours = input("Enter estimated hours:")
-## SHOW MEMBERS
-#show_members(key, project_id)
-#assigned_to = input("Enter assigned to:")
-#create_issue(key, project_id, tracker_id, priority_id, subject, description, due_date, estimated_hours, assigned_to)
+def change_issue_status(key, issue_id, status_id):
+    url = "https://kore.koders.in/issues/" + str(issue_id) + ".json"
+    payload={'issue[status_id]': status_id }
+    headers = {
+      'X-Redmine-API-Key': key,
+    }
+    response = requests.request("PUT", url, headers=headers, data=payload)
+    try:
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+

@@ -61,145 +61,206 @@ logger = Logger("kourage-boilerplate")
 bot = commands.Bot(command_prefix="~")
 
 @bot.event
-async def on_ready():  # Triggers when bot is ready
-    logger.success("Kourage is running at version {0}".format("0.1.0"))
+    async def on_ready():  # Triggers when bot is ready
+        logger.success("Kourage is running at version {0}".format("0.1.0"))
 
 @bot.command()
-async def test(ctx):
+async def status(ctx):
+        # STATUS ID INPUT
+        description = """
+        STATUS ID
+        1 - New
+        2 - In Progress
+        3 - Resolved
+        4 - Feedback
+        5 - Closed
+        6 - Rejected
 
-    key = os.environ.get('REDMINE_KEY')
-    description = issues.show_projects(key)
-    description += "\n\n"
-    description += "Enter project id" + "\n" + "_E.g - 28_"
-    embed = embeds.simple_embed("Projects", description)
-    project_all_embed = await ctx.send(embed=embed)
+        Enter status ID
+        _E.g - 2_
+        """
+        embed = embeds.simple_embed("Choose status id", description)
+        status_embed = await ctx.send(embed=embed)
+        reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣']
+        for reaction in reactions:
+            await status_embed.add_reaction(reaction)
 
-    # PROJECT ID INPUT
-    try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=60.0,
-            check=lambda message: message.author == ctx.author
-        )
+        def check(reaction, user):
+            return (str(reaction.emoji) == '1️⃣' or str(reaction.emoji) == '2️⃣' or str(reaction.emoji) == '3️⃣' or str(reaction.emoji) == '4️⃣' or str(reaction.emoji) == '5️⃣') and user.bot is not True and user == ctx.author
 
-        if msg:
+        async def take_reaction(ctx, timeout=300.0):
+            status_id = None
+            try:
+                result = await bot.wait_for('reaction_add', check=check, timeout=timeout)
+                reaction, user = result
+                if str(reaction)  == '1️⃣':
+                    status_id = 1
+                    return status_id
+                elif str(reaction) == '2️⃣':
+                    status_id = 2
+                    return status_id
+                elif str(reaction) == '3️⃣' :
+                    status_id = 3
+                    return status_id
+                elif str(reaction) == '4️⃣':
+                    status_id = 4
+                    return status_id
+                elif str(reaction) == '5️⃣':
+                    status_id = 5
+                    return status_id
+                elif str(reaction) == '6️⃣':
+                    status_id = 6
+                    return status_id
+                return status_id
+            except asyncio.TimeoutError:
+                await ctx.delete()
+
+        status_id = await take_reaction(ctx)
+        await status_embed.delete()
+        print(status_id)
+
+        if issues.change_status_id(key, issue_id, status_id):
+            logger.info("Successfully changed status to " + status_id + " on " + issue_id)
+            ctx.send("Successfully changed status to " + status_id + " on " + issue_id)
+        else
+            logger.info("Something went wrong while making changes in the status id")
+            ctx.send("Something went wrong while making changes in the status id")
+
+    @bot.command()
+    async def test(ctx):
+        key = os.environ.get('REDMINE_KEY')
+        description = issues.show_projects(key)
+        description += "\n\n"
+        description += "Enter project id" + "\n" + "_E.g - 28_"
+        embed = embeds.simple_embed("Projects", description)
+        project_all_embed = await ctx.send(embed=embed)
+
+        # PROJECT ID INPUT
+        try:
+            msg = await bot.wait_for(
+                "message",
+                timeout=60.0,
+                check=lambda message: message.author == ctx.author
+            )
+
+            if msg:
+                await project_all_embed.delete()
+                project_id = msg.content
+                await msg.delete()
+
+        except asyncio.TimeoutError:
             await project_all_embed.delete()
-            project_id = msg.content
-            await msg.delete()
-
-    except asyncio.TimeoutError:
-        await project_all_embed.delete()
-        await project_input_embed.delete()
-        await ctx.send('Cancelling due to timeout.', delete_after = 60.0)
+            await project_input_embed.delete()
+            await ctx.send('Cancelling due to timeout.', delete_after = 60.0)
 
 
-    # TRACKER ID INPUT
-    description = """
-    Tracker ID
-    1 - Bug
-    2 - Feature
-    3 - Support
-    4 - Task
-    """
-    embed = embeds.simple_embed("Choose tracker id", description)
-    tracker_embed = await ctx.send(embed=embed)
-    reactions =  ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
-    for reaction in reactions:
-        await tracker_embed.add_reaction(reaction)
+        # TRACKER ID INPUT
+        description = """
+        Tracker ID
+        1 - Bug
+        2 - Feature
+        3 - Support
+        4 - Task
+        """
+        embed = embeds.simple_embed("Choose tracker id", description)
+        tracker_embed = await ctx.send(embed=embed)
+        reactions =  ['1️⃣', '2️⃣', '3️⃣', '4️⃣']
+        for reaction in reactions:
+            await tracker_embed.add_reaction(reaction)
 
-    def check(reaction, user):
-        return (str(reaction.emoji) == '1️⃣' or str(reaction.emoji) == '2️⃣' or str(reaction.emoji) == '3️⃣' or str(reaction.emoji) == '4️⃣') and user.bot is not True and user == ctx.author
+        def check(reaction, user):
+            return (str(reaction.emoji) == '1️⃣' or str(reaction.emoji) == '2️⃣' or str(reaction.emoji) == '3️⃣' or str(reaction.emoji) == '4️⃣') and user.bot is not True and user == ctx.author
 
-    async def take_reaction(ctx, timeout=300.0):
-        tracker_id = None
+        async def take_reaction(ctx, timeout=300.0):
+            tracker_id = None
+            try:
+                result = await bot.wait_for('reaction_add', check=check, timeout=timeout)
+                reaction, user = result
+                print(reaction)
+                if str(reaction)  == '1️⃣':
+                    tracker_id = 1
+                    return tracker_id
+                elif str(reaction) == '2️⃣':
+                    tracker_id = 2
+                    return tracker_id
+                elif str(reaction) == '3️⃣' :
+                    tracker_id = 3
+                    return tracker_id
+                elif str(reaction) == '4️⃣':
+                    tracker_id = 4
+                    return tracker_id
+                return tracker_id
+            except asyncio.TimeoutError:
+                await ctx.delete()
+
+        tracker_id = await take_reaction(ctx)
+        print(tracker_id)
+        await tracker_embed.delete()
+
+        # PRIORITY ID INPUT
+        description = """
+        Priority ID
+        1 - Low
+        2 - Normal
+        3 - High
+        4 - Urgent
+        5 - Immediate
+
+        Enter priority ID
+        _E.g - 2_
+        """
+        embed = embeds.simple_embed("Choose priority id", description)
+        priority_embed = await ctx.send(embed=embed)
+        reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
+        for reaction in reactions:
+            await priority_embed.add_reaction(reaction)
+
+        def check(reaction, user):
+            return (str(reaction.emoji) == '1️⃣' or str(reaction.emoji) == '2️⃣' or str(reaction.emoji) == '3️⃣' or str(reaction.emoji) == '4️⃣' or str(reaction.emoji) == '5️⃣') and user.bot is not True and user == ctx.author
+
+        async def take_reaction(ctx, timeout=300.0):
+            priority_id = None
+            try:
+                result = await bot.wait_for('reaction_add', check=check, timeout=timeout)
+                reaction, user = result
+                print(reaction)
+                if str(reaction)  == '1️⃣':
+                    priority_id = 1
+                    return priority_id
+                elif str(reaction) == '2️⃣':
+                    priority_id = 2
+                    return priority_id
+                elif str(reaction) == '3️⃣' :
+                    priority_id = 3
+                    return priority_id
+                elif str(reaction) == '4️⃣':
+                    priority_id = 4
+                    return priority_id
+                elif str(reaction) == '5️⃣':
+                    priority_id = 5
+                    return priority_id
+                return priority_id
+            except asyncio.TimeoutError:
+                await ctx.delete()
+
+        priority_id = await take_reaction(ctx)
+        await priority_embed.delete()
+        print(priority_id)
+
+        # SUBJECT INPUT
+        subject_embed = embeds.simple_embed("Enter subject", "e.g - Issue generator via discord")
+        subject_embed = await ctx.send(embed=subject_embed)
+
         try:
-            result = await bot.wait_for('reaction_add', check=check, timeout=timeout)
-            reaction, user = result
-            print(reaction)
-            if str(reaction)  == '1️⃣':
-                tracker_id = 1
-                return tracker_id
-            elif str(reaction) == '2️⃣':
-                tracker_id = 2
-                return tracker_id
-            elif str(reaction) == '3️⃣' :
-                tracker_id = 3
-                return tracker_id
-            elif str(reaction) == '4️⃣':
-                tracker_id = 4
-                return tracker_id
-            return tracker_id
-        except asyncio.TimeoutError:
-            await ctx.delete()
+            msg = await bot.wait_for(
+                "message",
+                timeout=60.0,
+                check=lambda message: message.author == ctx.author
+            )
 
-    tracker_id = await take_reaction(ctx)
-    print(tracker_id)
-    await tracker_embed.delete()
-
-    # PRIORITY ID INPUT
-    description = """
-    Priority ID
-    1 - Low
-    2 - Normal
-    3 - High
-    4 - Urgent
-    5 - Immediate
-
-    Enter priority ID
-    _E.g - 2_
-    """
-    embed = embeds.simple_embed("Choose priority id", description)
-    priority_embed = await ctx.send(embed=embed)
-    reactions = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣']
-    for reaction in reactions:
-        await priority_embed.add_reaction(reaction)
-
-    def check(reaction, user):
-        return (str(reaction.emoji) == '1️⃣' or str(reaction.emoji) == '2️⃣' or str(reaction.emoji) == '3️⃣' or str(reaction.emoji) == '4️⃣' or str(reaction.emoji) == '5️⃣') and user.bot is not True and user == ctx.author
-
-    async def take_reaction(ctx, timeout=300.0):
-        priority_id = None
-        try:
-            result = await bot.wait_for('reaction_add', check=check, timeout=timeout)
-            reaction, user = result
-            print(reaction)
-            if str(reaction)  == '1️⃣':
-                priority_id = 1
-                return priority_id
-            elif str(reaction) == '2️⃣':
-                priority_id = 2
-                return priority_id
-            elif str(reaction) == '3️⃣' :
-                priority_id = 3
-                return priority_id
-            elif str(reaction) == '4️⃣':
-                priority_id = 4
-                return priority_id
-            elif str(reaction) == '5️⃣':
-                priority_id = 5
-                return priority_id
-            return priority_id
-        except asyncio.TimeoutError:
-            await ctx.delete()
-
-    priority_id = await take_reaction(ctx)
-    await priority_embed.delete()
-    print(priority_id)
-
-    # SUBJECT INPUT
-    subject_embed = embeds.simple_embed("Enter subject", "e.g - Issue generator via discord")
-    subject_embed = await ctx.send(embed=subject_embed)
-
-    try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=60.0,
-            check=lambda message: message.author == ctx.author
-        )
-
-        if msg:
-            await subject_embed.delete()
-            subject = msg.content
+            if msg:
+                await subject_embed.delete()
+                subject = msg.content
             await msg.delete()
 
     except asyncio.TimeoutError:
@@ -267,7 +328,7 @@ async def test(ctx):
         await ctx.send('Cancelling due to timeout.', delete_after = 60.0)
 
     # MEMBER ALLOCATION
-    description = issues.show_members(os.environ.get("REDMINE_KEY"), project_id)
+    description = issues.show_members(key, project_id)
     member_embed = embeds.simple_embed("Available members", description)
     member_embed = await ctx.send(embed=member_embed)
 
@@ -287,7 +348,7 @@ async def test(ctx):
         await member_embed.delete()
         await ctx.send('Cancelling due to timeout.', delete_after = 60.0)
 
-    if issues.create_issue(os.environ.get("REDMINE_KEY"), project_id, tracker_id, priority_id, subject, description, due_date, estimated_hours, assigned_to):
+    if issues.create_issue(key, project_id, tracker_id, priority_id, subject, description, due_date, estimated_hours, assigned_to):
         await ctx.send("Issue created successfully")
         await ctx.message.delete()
     else:
