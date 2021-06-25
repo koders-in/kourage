@@ -1135,6 +1135,49 @@ async def profile(ctx, *,username):
     cur.close()
 
 
+# Bind roles with user profile
+@bot.command()
+# @commands.has_role(715110864587587594)
+async def status(ctx, *, username: discord.Member):
+ 
+    conn = sqlite3.connect('main.sqlite')
+    cur = conn.cursor()
+    cur.execute('''SELECT Discord_Id FROM main WHERE Name = ?''', (username, ))
+
+    rows = cur.fetchone()
+    print(rows)
+
+    role = discord.utils.get(username.guild.roles((int(rows[0]))), name = 'Koders')
+
+    if role in username.roles:
+
+        sendEmbed1 = discord.Embed(
+            colour=0x28da5b,
+            title='Active User',
+            description=" This user profile is active. "
+        )
+        sendEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+        sendEmbed1.set_footer(text="Made with ❤️️  by Koders")
+        sendEmbed1.timestamp = datetime.datetime.utcnow()
+
+        await ctx.send(embed=sendEmbed1)
+
+    else:
+        
+        sendEmbed2 = discord.Embed(
+            colour=0x28da5b,
+            title='Inactive User',
+            description=" This user profile is not active. "
+        )
+        sendEmbed2.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+        sendEmbed2.set_footer(text="Made with ❤️️  by Koders")
+        sendEmbed2.timestamp = datetime.datetime.utcnow()
+
+        await ctx.send(embed=sendEmbed2)
+
+    cur.close()
+
+
 # Update Profile Command
 @bot.command()
 async def update(ctx, username: discord.Member):
