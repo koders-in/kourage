@@ -527,10 +527,60 @@ async def user(ctx):
         sendEmbed.add_field(name='Skills', value = f'{message13}', inline=False)
         sendEmbed.add_field(name='Previous projects', value = f'{message14}', inline=False)
 
-        cursor.execute('''INSERT INTO main
-        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Language, Ide, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message11, message12, message13, message14)) 
+        # Admin Channel Id
+        channel = bot.get_channel("")
 
-        cursor.commit()
+        message = await channel.send(embed = sendEmbed)
+        await message.add_reaction('✅')
+        await message.add_reaction('❌')
+
+        from uuid import uuid4
+
+        event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+        unique_id = event_id[48:].upper()
+
+
+        def check (reaction, user):
+            return not user.bot and message == reaction.message
+    
+        try:
+            reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
+            # Role logic
+            role_string = ''
+            for role in user.roles:
+                if(role.name == '@everyone'):
+                    continue
+                else:
+                    role_string += role.name
+                    role_string += ','
+            role_string = role_string[:-1]
+        
+            while reaction.message == message:
+                if str(reaction.emoji) == "✅":                
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has been approved!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+
+                    cursor.execute('''INSERT INTO main
+                    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Language, Ide, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message11, message12, message13, message14)) 
+
+                    cursor.commit()
+
+                    await channel.send('Created User profile has been approved!')
+                    return
+                
+                if str(reaction.emoji) == "❌":
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has not been approved!. We thank you for your valuable time!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+                    
+                    await channel.send('Created User profile has not been approved!')
+                    return
+        except asyncio.TimeoutError:
+            await bot.get_channel(ctx.channel_id).send("Timeout for creating user profile. Please try again!")
+            return
 
 
     # Marketing role
@@ -704,12 +754,61 @@ async def user(ctx):
         sendEmbed.add_field(name='Favourite Tools', value = f'{message18}', inline=False)
         sendEmbed.add_field(name='Favourite Brand', value = f'{message19}', inline=False)
         sendEmbed.add_field(name='Hobbies', value = f'{message20}', inline=False)
+ 
+        # Admin Channel Id
+        channel = bot.get_channel("")
+
+        message = await channel.send(embed = sendEmbed)
+        await message.add_reaction('✅')
+        await message.add_reaction('❌')
+
+        from uuid import uuid4
+
+        event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+        unique_id = event_id[48:].upper()
 
 
-        cursor.execute('''INSERT INTO main
-        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Bio, Skills, Projects, Tools, Brand, Hobbies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message15, message16, message17, message18, message19, message20)) 
+        def check (reaction, user):
+            return not user.bot and message == reaction.message
+    
+        try:
+            reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
+            # Role logic
+            role_string = ''
+            for role in user.roles:
+                if(role.name == '@everyone'):
+                    continue
+                else:
+                    role_string += role.name
+                    role_string += ','
+            role_string = role_string[:-1]
+        
+            while reaction.message == message:
+                if str(reaction.emoji) == "✅":                
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has been approved!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
 
-        cursor.commit()
+                    cursor.execute('''INSERT INTO main
+                    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Bio, Skills, Projects, Tools, Brand, Hobbies) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message15, message16, message17, message18, message19, message20)) 
+
+                    cursor.commit()
+
+                    await channel.send('Created User profile has been approved!')
+                    return
+                
+                if str(reaction.emoji) == "❌":
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has not been approved!. We thank you for your valuable time!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+                    
+                    await channel.send('Created User profile has not been approved!')
+                    return
+        except asyncio.TimeoutError:
+            await bot.get_channel(ctx.channel_id).send("Timeout for creating user profile. Please try again!")
+            return
 
 
     # Design role 
@@ -828,11 +927,60 @@ async def user(ctx):
         sendEmbed.add_field(name='Skills', value = f'{message23}', inline=False)
         sendEmbed.add_field(name='Previous projects', value = f'{message24}', inline=False)
 
-    
-        cursor.execute('''INSERT INTO main
-        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Tools, Portfolio, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message21, message22, message23, message24)) 
+        # Admin Channel Id
+        channel = bot.get_channel("")
 
-        cursor.commit()
+        message = await channel.send(embed = sendEmbed)
+        await message.add_reaction('✅')
+        await message.add_reaction('❌')
+
+        from uuid import uuid4
+
+        event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+        unique_id = event_id[48:].upper()
+
+
+        def check (reaction, user):
+            return not user.bot and message == reaction.message
+    
+        try:
+            reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
+            # Role logic
+            role_string = ''
+            for role in user.roles:
+                if(role.name == '@everyone'):
+                    continue
+                else:
+                    role_string += role.name
+                    role_string += ','
+            role_string = role_string[:-1]
+        
+            while reaction.message == message:
+                if str(reaction.emoji) == "✅":                
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has been approved!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+
+                    cursor.execute('''INSERT INTO main
+                    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Tools, Portfolio, Skills, Projects) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message21, message22, message23, message24)) 
+
+                    cursor.commit()
+
+                    await channel.send('Created User profile has been approved!')
+                    return
+                
+                if str(reaction.emoji) == "❌":
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has not been approved!. We thank you for your valuable time!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+                    
+                    await channel.send('Created User profile has not been approved!')
+                    return
+        except asyncio.TimeoutError:
+            await bot.get_channel(ctx.channel_id).send("Timeout for creating user profile. Please try again!")
+            return
 
 
     # Content role
@@ -914,7 +1062,7 @@ async def user(ctx):
             await sent27.delete()
             await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 120)
 
-        sent28 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed18)
+        sent28 = await bot.get_channel(ctx.channel_id).send(embed = suggestEmbed28)
         try:
             msg = await bot.wait_for(
                 "message",
@@ -1006,64 +1154,60 @@ async def user(ctx):
         sendEmbed.add_field(name='Favourite Tools', value = f'{message28}', inline=False)
         sendEmbed.add_field(name='Favourite Blogs', value = f'{message29}', inline=False)
         sendEmbed.add_field(name='Favourite Books', value = f'{message30}', inline=False)
- 
 
-        cursor.execute('''INSERT INTO main
-        (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Bio, Skills, Projects, Tools, Blogs, Books) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message25, message26, message27, message28, message29, message30)) 
+        # Admin Channel Id
+        channel = bot.get_channel("")
 
-        cursor.commit()
+        message = await channel.send(embed = sendEmbed)
+        await message.add_reaction('✅')
+        await message.add_reaction('❌')
 
+        from uuid import uuid4
 
-    await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
-
-    # Admin Channel Id
-    channel = bot.get_channel("")
-
-    message = await channel.send(embed = sendEmbed)
-    await message.add_reaction('✅')
-    await message.add_reaction('❌')
-
-    from uuid import uuid4
-
-    event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
-    unique_id = event_id[48:].upper()
+        event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
+        unique_id = event_id[48:].upper()
 
 
-    def check (reaction, user):
-        return not user.bot and message == reaction.message
+        def check (reaction, user):
+            return not user.bot and message == reaction.message
     
-    try:
-        reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
-        # Role logic
-        role_string = ''
-        for role in user.roles:
-            if(role.name == '@everyone'):
-                continue
-            else:
-                role_string += role.name
-                role_string += ','
-        role_string = role_string[:-1]
+        try:
+            reaction, user = await bot.wait_for('reaction_add',check=check,timeout=604800) # this reaction is checking for adding an emoji, this line is automatically getting run because of like 31,32
+            # Role logic
+            role_string = ''
+            for role in user.roles:
+                if(role.name == '@everyone'):
+                    continue
+                else:
+                    role_string += role.name
+                    role_string += ','
+            role_string = role_string[:-1]
         
-        while reaction.message == message:
-            if str(reaction.emoji) == "✅":                
-                await bot.get_channel(ctx.channel_id).send('Created User profile has been approved!')
-                #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
-                await bot.get_channel(ctx.channel_id).send("Your profile was: ")
-                message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+            while reaction.message == message:
+                if str(reaction.emoji) == "✅":                
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has been approved!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+
+                    cursor.execute('''INSERT INTO main
+                    (Name, Phone, Mail, Birthday, WhatsApp, Facebook, Instagram, Redmine, Discord_Id, Roles, Bio, Skills, Projects, Tools, Blogs, Books) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', (message1, message2, message3, message4, message5, message6, message7, message8, msg9, message10, message25, message26, message27, message28, message29, message30)) 
+
+                    cursor.commit()
                 
-                await channel.send('Created User profile has been approved!')
-                return
-            if str(reaction.emoji) == "❌":
-                await bot.get_channel(ctx.channel_id).send('Created User profile has not been approved!. We thank you for your valuable time!')
-                #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
-                await bot.get_channel(ctx.channel_id).send("Your profile was: ")
-                message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
+                    await channel.send('Created User profile has been approved!')
+                    return
+                if str(reaction.emoji) == "❌":
+                    await bot.get_channel(ctx.channel_id).send('Created User profile has not been approved!. We thank you for your valuable time!')
+                    #sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False) 
+                    await bot.get_channel(ctx.channel_id).send("Your profile was: ")
+                    message1 = await bot.get_channel(ctx.channel_id).send(embed = sendEmbed)
                     
-                await channel.send('Created User profile has not been approved!')
-                return
-    except asyncio.TimeoutError:
-        await bot.get_channel(ctx.channel_id).send("Timeout for creating user profile. Please try again!")
-        return
+                    await channel.send('Created User profile has not been approved!')
+                    return
+        except asyncio.TimeoutError:
+            await bot.get_channel(ctx.channel_id).send("Timeout for creating user profile. Please try again!")
+            return
 
 
 # User Profile Info Command
@@ -1137,7 +1281,6 @@ async def profile(ctx, *,username):
 
 # Bind roles with user profile
 @bot.command()
-# @commands.has_role(715110864587587594)
 async def status(ctx, *, username: discord.Member):
  
     conn = sqlite3.connect('main.sqlite')
@@ -1145,35 +1288,40 @@ async def status(ctx, *, username: discord.Member):
     cur.execute('''SELECT Discord_Id FROM main WHERE Name = ?''', (username, ))
 
     rows = cur.fetchone()
-    print(rows)
+    row = int(rows[0])
 
-    role = discord.utils.get(username.guild.roles((int(rows[0]))), name = 'Koders')
+    guild = bot.get_guild("Koders-Server-Id") 
+    roles = ["Koders", "Kore", "Kommunity" ]
 
-    if role in username.roles:
+    actual_roles = [discord.utils.get(guild.roles, name = i) for i in roles]
 
-        sendEmbed1 = discord.Embed(
+    if any(i for i in actual_roles in some_member.roles):
+
+        ActiveEmbed = discord.Embed(
             colour=0x28da5b,
             title='Active User',
             description=" This user profile is active. "
         )
-        sendEmbed1.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-        sendEmbed1.set_footer(text="Made with ❤️️  by Koders")
-        sendEmbed1.timestamp = datetime.datetime.utcnow()
+        ActiveEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+        ActiveEmbed.set_footer(text="Made with ❤️️  by Koders")
+        ActiveEmbed.timestamp = datetime.datetime.utcnow()
 
-        await ctx.send(embed=sendEmbed1)
+        await ctx.send(embed=ActiveEmbed)
 
     else:
         
-        sendEmbed2 = discord.Embed(
+        InactiveEmbed = discord.Embed(
             colour=0x28da5b,
             title='Inactive User',
             description=" This user profile is not active. "
         )
-        sendEmbed2.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-        sendEmbed2.set_footer(text="Made with ❤️️  by Koders")
-        sendEmbed2.timestamp = datetime.datetime.utcnow()
+        InactiveEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+        InactiveEmbed.set_footer(text="Made with ❤️️  by Koders")
+        InactiveEmbed.timestamp = datetime.datetime.utcnow()
 
-        await ctx.send(embed=sendEmbed2)
+        await ctx.send(embed=InactiveEmbed)
+
+    await ctx.message.delete()
 
     cur.close()
 
@@ -1519,6 +1667,8 @@ async def update(ctx, username: discord.Member):
             
     except asyncio.TimeoutError:
         await ctx.send("Time out. Please try again!")
+
+    await ctx.message.delete()
 
     cur.close()
 
