@@ -4,6 +4,8 @@ import json
 import csv
 import os
 from uuid import uuid4
+from sqlite3.dbapi2 import Cursor
+import sqlite3
 import logging
 import platform
 import time
@@ -17,35 +19,35 @@ from discord.ext import commands
 from discord.ext.commands import CommandNotFound
 from discord.ext.tasks import loop
 from termcolor import colored
+import embeds
 
 machine = platform.node()
 init()
 
-logging.basicConfig(format="%(asctime)s %(message)s", level=logging.INFO)
-
-class Logger:
-    def __init__(self, app):
-        self.app = app
-
-    def info(self, message):
-        print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', 'yellow'))
-
-    def success(self, message):
-        print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', 'green'))
-
-    def error(self, message):
-        print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', 'red'))
-
-    def color(self, message, color):
-        print(colored(f'[{time.asctime(time.localtime())}] [{machine}] [{self.app}] {message}', color))
-
-logger = Logger("kourage-suggestion")
+logger = embeds.Logger("kourage-suggestions")
 
 # FOR PRODUCTION
 bot = commands.Bot(command_prefix="~")
 
 @bot.event
 async def on_ready():  # Triggers when bot is ready
+    db = sqlite3.connect('main.sqlite')
+    cursor = db.cursor()
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS suggestions(
+        Title TEXT,
+        Description TEXT,
+        UniqueId TEXT,
+        Status TEXT,
+        DiscordId TEXT,
+        User TEXT,
+        Remark TEXT
+        )
+    ''')
+
+    db.commit()
+    print("bot is ready!")
+
     logger.success("Kourage is running at version {0}".format("0.1.0"))
 
 @bot.event
@@ -56,60 +58,39 @@ async def on_raw_reaction_add(payload):
 
 # Suggestion function
 async def suggestion(ctx):
+    cursor = sqlite3.connect('main.sqlite')
     emojis = ['✅','❌'] 
-    admin_embed = discord.Embed(colour=0x28da5b)
-    admin_embed=discord.Embed(title="Suggestion Bot", description="To accept the suggestion: ✅"
-                                                                    "To decline the suggestion: ❌", color=0x28da5b)
-    admin_embed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-    admin_embed.timestamp = datetime.datetime.utcnow()
-    admin_embed.set_footer(text="Made with ❤️️  by Koders")
-    admin_embed.set_author(name = f'suggested by {ctx.member}', icon_url = f'{ctx.member.avatar_url}')
     
+    admin_embed = embeds.simple_embed(ctx,title="Suggestion Bot", description="To accept the suggestion: ✅"
+    "To decline the suggestion: ❌")
+    admin_embed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
+    admin_embed.set_author(name = f'suggested by {ctx.member}', icon_url = f'{ctx.member.avatar_url}')
+    discordId = str(ctx.member.id)
+    user = str(ctx.member.name)
+
     # Title
-    title_embed = discord.Embed(colour=0x28da5b)
-    title_embed = discord.Embed(
+    title_embed = embeds.simple_embed(ctx,
         title = 'Please tell me the title of the Suggestion',
         description = ' This request will timeout after a minute'
     )
     sent = await bot.get_channel(ctx.channel_id).send(embed = title_embed)
-    try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=60.0,
-            check=lambda message: message.author == ctx.member
-        )
-        
-        if msg:
-            await sent.delete()
-            titlemessage = msg.content
-            await msg.delete()
-    
-    except asyncio.TimeoutError:
-        await sent.delete()
-        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 60.0)
+    titlemessage = embeds.ctx_input(ctx, bot, sent)
+    if not titlemessage:
+        logger.error("Title message timeout")
+        return
+    logger.info("Title message"+titlemessage)
         
     # description
-    description_embed = discord.Embed(colour=0x28da5b)
-    description_embed = discord.Embed(
+    description_embed = embeds.simple_embed(ctx,
         title = 'Please tell me the Description of the Suggestion',
         description = ' This request will timeout after 5 minutes'
     )
     sent2 = await bot.get_channel(ctx.channel_id).send(embed = description_embed)
-    try:
-        msg = await bot.wait_for(
-            "message",
-            timeout=300.0,
-            check=lambda message: message.author == ctx.member
-        )
-        
-        if msg:
-            await sent2.delete()
-            descriptionmessage = msg.content
-            await msg.delete()
-    
-    except asyncio.TimeoutError:
-        await sent2.delete()
-        await bot.get_channel(ctx.channel_id).send('Cancelling due to timeout.', delete_after = 300.0)
+    descriptionmessage = embeds.ctx_input(ctx, bot, sent2, timeout = 300.0)
+    if not descriptionmessage:
+        logger.error("Description message timeout")
+        return
+    logger.info("Description message"+descriptionmessage)
         
     # Unique ID
     event_id = datetime.datetime.now().strftime('%Y%m-%d%H-%M%S-') + str(uuid4())
@@ -124,14 +105,12 @@ async def suggestion(ctx):
     await message.add_reaction('✅')
     await message.add_reaction('❌')
     
-    sendEmbed = discord.Embed(colour = 0x28da5b)
+    sendEmbed = embeds.simple_embed(ctx, "", "")
     sendEmbed.add_field(name = 'Title', value  = f'{titlemessage}')
     sendEmbed.add_field(name = 'Description', value  = f'{descriptionmessage}')
     sendEmbed.add_field(name='Ticket ID: ', value = f'{unique_id}', inline=False) 
     sendEmbed.set_author(name = f'suggested by {ctx.member}', icon_url = f'{ctx.member.avatar_url}')
     sendEmbed.set_thumbnail(url="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png?width=455&height=447")
-    sendEmbed.timestamp = datetime.datetime.utcnow()
-    sendEmbed.set_footer(text="Made with ❤️️  by Koders")
     
     def check (reaction, user):
         return not user.bot and message == reaction.message
@@ -152,91 +131,55 @@ async def suggestion(ctx):
                 await message.delete()
                 
                 # Remarks Embed
-                remarks_embed = discord.Embed(colour=0x28da5b)
-                remarks_embed = discord.Embed(
+                remarks_embed = embeds.simple_embed(ctx,
                     title = 'Any remarks to be added? ',
                     description = ' This request will timeout after 5 minutes'
                 )
                 
                 remarks = await channel.send(embed = remarks_embed)
-                try:
-                    msg = await bot.wait_for(
-                        "message",
-                        timeout=300.0,
-                        check=lambda message: message.author == user
-                    )
-                    
-                    if msg:
-                        await remarks.delete()
-                        remarksmessage = msg.content
-                        await msg.delete()
-                
-                except asyncio.TimeoutError:
-                    await remarks.delete()
-                    await channel.send('Cancelling due to timeout.', delete_after = 300.0)
-                    
-                data = []
-                data.append(titlemessage)
-                data.append(descriptionmessage)
-                data.append(unique_id)
-                data.append("Approved")
-                data.append(ctx.member)
-                data.append(user)
-                data.append(remarksmessage)
-                
-                with open('suggestions.csv', 'a+', newline='') as f:
-                    writer = csv.writer(f)
-                    writer.writerow(data)
-                del data
-                                    
+                remarksmessage = embeds.ctx_input(ctx, bot, remarks, timeout = 300.0)
+                if not remarksmessage:
+                    logger.error("Remarks message timeout")
+                    return
+                logger.info("Remarks message"+remarksmessage)
+
                 sendEmbed.add_field(name='Approved by:  ', value = f'{user}', inline=False)
                 sendEmbed.add_field(name='Remarks: ',value = f'{remarksmessage}',inline=False)
                 approved_channel = bot.get_channel(int(os.environ.get("SUGGESTION_APPROVED_CHANNEL_ID")))
                 await approved_channel.send(embed = sendEmbed)
+                status = "Approved"
+
+                cursor.execute('''INSERT INTO suggestions
+                (Title, Description, UniqueId, Status, DiscordId, User, Remark) VALUES (?, ?, ?, ?, ?, ?, ?)''', (titlemessage, descriptionmessage, unique_id, status, str(discordId), str(user), remarksmessage))
+                cursor.commit()
+                cursor.close()
                 
                 return
 
             elif str(reaction.emoji) == "❌":
                 await message.delete()
-                remarks_embed = discord.Embed(colour=0x28da5b)
-                remarks_embed = discord.Embed(
+                remarks_embed = embeds.simple_embed(ctx,
                     title = 'Any remarks to be added? ',
                     description = ' This request will timeout after 5 minutes'
                 )
                 remarks = await channel.send(embed = remarks_embed)
-                try:
-                    msg = await bot.wait_for(
-                        "message",
-                        timeout=300.0,
-                        check=lambda message: message.author == user
-                    )
-                    if msg:
-                        await remarks.delete()
-                        remarksmessage = msg.content
-                        await msg.delete()
-                except asyncio.TimeoutError:
-                    await remarks.delete()
-                    await channel.send('Cancelling due to timeout.', delete_after = 300.0)
-                
+                remarksmessage = embeds.ctx_input(ctx, bot, remarks, timeout = 300.0)
+                if not remarksmessage:
+                    logger.error("Remarks message timeout")
+                    return
+                logger.info("Remarks message"+remarksmessage)
+
                 sendEmbed.add_field(name='Disapproved by:  ', value = f'{user}', inline=False)
                 sendEmbed.add_field(name='Remarks: ',value = f'{remarksmessage}',inline=False) 
                 disapproved_channel = bot.get_channel(int(os.environ.get("SUGGESTION_DISAPPROVED_CHANNEL_ID")))
                 await disapproved_channel.send(embed = sendEmbed)
-                
-                data = []
-                data.append(titlemessage)
-                data.append(descriptionmessage)
-                data.append(unique_id)
-                data.append("Rejected")
-                data.append(ctx.member)
-                data.append(user)
-                data.append(remarksmessage)
-                
-                with open('suggestions.csv', 'a+', newline='') as f:
-                    writer = csv.writer(f)
-                    writer.writerow(data)
-                del data
-                    
+                status = "Disapproved"
+
+                cursor.execute('''INSERT INTO suggestions
+                (Title, Description, UniqueId, Status, DiscordId, User, Remark) VALUES (?, ?, ?, ?, ?, ?, ?)''', (titlemessage, descriptionmessage, unique_id, status, str(discordId), str(user), remarksmessage))
+                cursor.commit()
+                cursor.close()
+            
                 return
     except asyncio.TimeoutError:
         await bot.get_channel(ctx.channel_id).send("Your suggestion was timed out. Please try again!")
