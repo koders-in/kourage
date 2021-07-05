@@ -37,15 +37,23 @@ git --version >/dev/null 2>&1
 git_ok=$?
 
 [[ "$git_ok" -eq 127 ]] && \
-	printf "[${BOLD}${FAIL}ERROR${NC}] ${FAIL}Git Not found!!!${NC}${NT}" && \
+	printf "[${BOLD}${FAIL}ERROR${NC}] ${FAIL}Git Not found!!!\n${NC}${NT}" && \
 	exit 2
 
 # -Directory check
 git_branch=`git branch 2>/dev/null | grep '^*' | colrm 1 2 | tr -d '\n' && echo  -n`
 
 [[ -z "${git_branch}" ]] && \
-	printf "[${BOLD}${FAIL}ERROR${NC}] ${FAIL}Not a github branch!!!\nPlease clone again and don't remove the '.git' file.${NC}${NT}" && \
+	printf "[${BOLD}${FAIL}ERROR${NC}] ${FAIL}Not a github branch!!!\nPlease clone again and don't remove the '.git' file.\n${NC}${NT}" && \
+	exit 2
+
+[[ -z "${TOKEN}" ]] && \
+	printf "[${BOLD}${FAIL}ERROR${NC}] ${FAIL}'TOKEN' not defined!!!\nPlease export and re-run the script again.\n${NC}${NT}" && \
+	exit 2
+
+[[ -z "${REDMINE_KEY}" ]] && \
+	printf "[${BOLD}${FAIL}ERROR${NC}] ${FAIL}'REDMINE_KEY' not defined!!!\nPlease export and re-run the script again.\n${NC}${NT}" && \
 	exit 2
 
 run_cmd "docker build -t ${git_branch} ." "Docker file built."
-run_cmd "docker run -v kourage_data:/usr/src/app/db -e TOKEN ${git_branch}" "Run"
+run_cmd "docker run -e TOKEN -e REDMINE_KEY -v kourage_data:/usr/src/app/db -e TOKEN ${git_branch}" "Run"
