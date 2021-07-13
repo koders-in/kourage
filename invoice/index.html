@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Invoice</title>
+		<link rel="stylesheet" href="style.css">
+		<link rel="license" href="https://www.opensource.org/licenses/mit-license/">
+		
+	</head>
+	<body>
+		<header>
+            <h1 style="color: black">Tax Invoice/Bill of Supply/Cash Memo</h1>
+            <span><img alt="" src="https://media.discordapp.net/attachments/700257704723087360/819643015470514236/SYM_TEAL.png" width="75" height="75" ><input type="file" accept="image/*"></span>
+			
+			
+			
+		</header>
+        
+		<div class="flex-container">
+			<div class="flex-child">
+				<h1 style="text-align:left">Billed By</h1>
+				<br>
+				<p>Name: Koders</p>
+				<p>Address: Flat No 9, Dron Vihar Housing Society,</p>
+				<p>Mitthi beri, Prem Nagar,</p>
+        		<p>Dehradun, Uttarakhand, 248007</p>
+				<p>GSTIN: 457384287398</p>
+				<p>Email: abc@gmail.com</p>
+        		<p>Contact No.: +918630306110</p>
+				<br>
+			</div>
+			<div class="flex-child">
+				<h1  style="text-align:left">Billed To</h1>
+				<br>
+				<p>Name:{p.name}</p>
+				<p>Address:{p.address}</p>
+				<p>Email:{p.email}</p>
+				<br>
+				</address>
+			</div>
+		</div>
+    
+    <address>
+				<table class="meta" style="float:left">
+					<tr>
+						<th><span contenteditable>Invoice No:</span></th>
+						<td style="text-align:left;">{p.invoice_id}</span></td>
+					</tr>
+					<tr>
+						<th><span contenteditable>Invoice Date: </span></th>
+						<td><p style="text-align:center;">{p.current_date}</p></td>
+					</tr>
+					<tr>
+						<th><span contenteditable>Due Date:</span></th>
+						<td><p style="text-align:left;">{p.final_duedate}</p></td>
+					</tr>
+				</table>
+	</address>
+		
+			<table class="inventory">
+				<thead>
+					<tr>
+						<th><span>S.No</span></th>
+						<th><span>Item</span></th>
+						<th><span>Quantity</span></th>
+						<th><span>Rate</span></th>
+						<th><span>Amount</span></th>
+					</tr>
+				</thead>
+				<tbody>
+				{p.items}
+				<tr>
+					<td colspan="4"><span><h1>Total Amount:</h1></span></td><td><p style="text-align:right;">Rs. {p.Total_Amount}</p></td></tr>
+					
+				</tbody>
+				</table>
+			
+		
+
+		</article>
+
+		<aside>
+
+			<h1 style="text-align:left"><span>Terms and Conditions</span></h1>
+            <br>
+            <hr>
+            
+			<div>
+				<p style="display: inline">1. Please pay within 15 days from date of invoice, overdue interest @14% will be charged.</p>
+				<br>
+                <br>
+				<p>2. Please quote invoice number when remitting funds.</p>
+				<br>
+                <br>
+				<p style="text-align:center">For any enquiry, reach out via email at abc@gmail.com or call on +91 45674-5435</p>
+			</div>
+		</aside>
+	</body>
+</html>
+
+
+</body>
+</html>
