@@ -21,7 +21,7 @@ class Main:
 
  payload={}
  headers = {
-  'X-Redmine-API-Key': '16e67ac3e8d6cc4a52aa6c1b7be9d794866f2f8c',
+  'X-Redmine-API-Key': 'your key',
   }
 
  response = requests.request("GET", url, headers=headers, data=payload).json()
@@ -48,7 +48,7 @@ class Main:
  for i in data1["Items"]:
    Total_Amount=Total_Amount+(int(i["Rate"])*int(i["Quantity"]))
    items += item_data.format(sno=str(i["id"]),item=str(i["name"]),qty=str(i["Quantity"]),rate=str(i["Rate"]),amnt=str(int(i["Rate"])*int(i["Quantity"])))
-   #items=items+str(i["id"])+"\n"+str(i["name"])+"\n"+str(i["Quantity"])+"\n"+str(i["Rate"])+"\nTotal: Rs"+str(int(i["Rate"])*int(i["Quantity"]))+"\n\n"))
+   
  
  
 
