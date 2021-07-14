@@ -8,6 +8,7 @@ import discord
 from colorama import init
 from termcolor import colored
 import datetime
+
 machine = platform.node()
 init()
 

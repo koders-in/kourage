@@ -86,3 +86,5 @@ def change_issue_status(key, issue_id, status_id):
     except:
         print("Something went wrong")
         return False
+
+print(show_issues(os.environ.get("REDMINE_KEY")))
