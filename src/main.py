@@ -4,7 +4,7 @@ import os
 import datetime
 import discord
 import requests
-import redmine_api
+ifport redmine_api
 from discord.ext import commands
 from discord.ext.tasks import loop
 import discord
@@ -341,6 +341,7 @@ async def archive_guild(ctx):
 
 @bot.command()
 async def archive_channel(ctx):
+    await _archive(ctx, True)
     await _archive(ctx, True)
 
 if __name__ == "__main__":
